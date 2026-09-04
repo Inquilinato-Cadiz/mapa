@@ -36,3 +36,6 @@ form.addEventListener("submit", () => {
   result.classList.remove("hidden");
   result.scrollIntoView({ behavior: "smooth", block: "start" });
 });
+
+// Módulo ES: evita que TypeScript comparta el ámbito global entre scripts.
+export {};

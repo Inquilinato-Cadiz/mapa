@@ -62,3 +62,6 @@ const render = () => {
 };
 
 form.addEventListener("submit", render);
+
+// Módulo ES: evita que TypeScript comparta el ámbito global entre scripts.
+export {};

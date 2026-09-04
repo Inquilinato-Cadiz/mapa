@@ -120,3 +120,6 @@ if (params.get("q")) q.value = params.get("q")!;
 
 [q, group, cp, companies].forEach((el) => el.addEventListener("input", render));
 render();
+
+// Módulo ES: evita que TypeScript comparta el ámbito global entre scripts.
+export {};

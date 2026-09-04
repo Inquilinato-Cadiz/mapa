@@ -70,3 +70,6 @@ const render = () => {
 [signed, update].forEach((el) => el.addEventListener("input", refreshHelp));
 form.addEventListener("submit", render);
 refreshHelp();
+
+// Módulo ES: evita que TypeScript comparta el ámbito global entre scripts.
+export {};
