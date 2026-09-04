@@ -8,6 +8,14 @@ interface Props {
 }
 
 const { title, description = "Mapa de viviendas turísticas de Cádiz y herramientas para inquilinas. Sindicato de Inquilinas e Inquilinos de Cádiz.", fullBleed = false } = Astro.props;
+
+const social = [
+  { href: "https://www.instagram.com/inquilinato_cadiz", icon: "fa-brands fa-instagram", label: "Instagram" },
+  { href: "https://bsky.app/profile/inquilinatocdz.bsky.social", icon: "fa-brands fa-bluesky", label: "Bluesky" },
+  { href: "https://m.facebook.com/p/Sindicato-de-Inquilinas-de-C%C3%A1diz-61572490201233/", icon: "fa-brands fa-facebook-f", label: "Facebook" },
+  { href: "https://inquilinatocadiz.org", icon: "fa-solid fa-desktop", label: "Web del sindicato" },
+  { href: "https://chat.whatsapp.com/G0CqD27nWeY26BUwAAZVD7", icon: "fa-brands fa-whatsapp", label: "WhatsApp" },
+];
 const nav = [
   { href: "/", label: "Mapa" },
   { href: "/datos/", label: "Datos" },
@@ -15,6 +23,7 @@ const nav = [
   { href: "/denuncia/", label: "Denunciar" },
 ];
 const path = Astro.url.pathname;
+const active = (href: string) => path === href || (href !== "/" && path.startsWith(href));
 ---
 
 <!doctype html>
@@ -28,21 +37,33 @@ const path = Astro.url.pathname;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:image" content="/logo-cabecera.png" />
   </head>
-  <body class="min-h-screen flex flex-col">
-    <header class="bg-brand text-white">
-      <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
-        <a href="https://inquilinatocadiz.org/" class="display text-xl leading-none">
-          Sindicato de Inquilinas <span class="font-sans text-base font-normal normal-case tracking-normal">· Cádiz</span>
-        </a>
-        <nav class="flex gap-4 text-sm font-medium">
-          {nav.map((item) => (
-            <a href={item.href} class:list={["hover:underline", { "underline decoration-2 underline-offset-4": path === item.href || (item.href !== "/" && path.startsWith(item.href)) }]}>{item.label}</a>
+  <body class="flex min-h-screen flex-col">
+    <header id="site-header">
+      <div class="bg-brand text-white">
+        <div class="mx-auto flex h-9 max-w-6xl items-center justify-end gap-5 px-4 text-sm">
+          {social.map((s) => (
+            <a href={s.href} aria-label={s.label} title={s.label} rel="noopener" target="_blank" class="hover:opacity-80"><i class={s.icon} aria-hidden="true"></i></a>
           ))}
-        </nav>
+        </div>
+      </div>
+      <div class="border-b border-neutral-200 bg-white">
+        <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-3">
+          <a href="https://inquilinatocadiz.org/" class="shrink-0" title="Sindicato de Inquilinas e Inquilinos de Cádiz">
+            <img src="/logo-cabecera.png" alt="Sindicato de Inquilinas e Inquilinos de Cádiz" width="726" height="162" class="h-11 w-auto" />
+          </a>
+          <nav class="display flex flex-wrap items-center gap-x-5 gap-y-1 text-lg tracking-wide">
+            {nav.map((item) => (
+              <a href={item.href} class:list={["border-b-2 pb-0.5 hover:text-brand", active(item.href) ? "border-neutral-900" : "border-transparent"]}>{item.label}</a>
+            ))}
+            <a href="https://inquilinatocadiz.org/afiliate/" class="rounded-md bg-brand px-3 py-1 text-white hover:bg-brand-dark">Afíliate</a>
+          </nav>
+        </div>
       </div>
     </header>
 
@@ -51,9 +72,14 @@ const path = Astro.url.pathname;
     </main>
 
     <footer class="border-t border-neutral-200 bg-white text-sm text-neutral-600">
-      <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-4">
-        <p>Datos de viviendas turísticas: <a href="https://www.juntadeandalucia.es/datosabiertos/portal/dataset/openrta" class="underline hover:no-underline" rel="noopener">Registro de Turismo de Andalucía (OpenRTA)</a>, CC BY 4.0. Mapa: © OpenStreetMap.</p>
-        <p><a href="https://inquilinatocadiz.org/" class="underline hover:no-underline">inquilinatocadiz.org</a> · <a href="https://inquilinatocadiz.org/afiliate/" class="underline hover:no-underline">Afíliate</a></p>
+      <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-5">
+        <a href="https://inquilinatocadiz.org/"><img src="/logo-cabecera.png" alt="Sindicato de Inquilinas e Inquilinos de Cádiz" width="726" height="162" class="h-9 w-auto" /></a>
+        <p class="max-w-xl">Datos de viviendas turísticas: <a href="https://www.juntadeandalucia.es/datosabiertos/portal/dataset/openrta" class="underline hover:no-underline" rel="noopener">Registro de Turismo de Andalucía (OpenRTA)</a>, CC BY 4.0. Mapa: © OpenStreetMap.</p>
+        <div class="flex gap-4 text-lg text-neutral-700">
+          {social.map((s) => (
+            <a href={s.href} aria-label={s.label} title={s.label} rel="noopener" target="_blank" class="hover:text-brand"><i class={s.icon} aria-hidden="true"></i></a>
+          ))}
+        </div>
       </div>
     </footer>
   </body>
