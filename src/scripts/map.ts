@@ -113,5 +113,10 @@ for (const f of all) {
   markers.set(f, m);
 }
 
+// Enlaces desde otras páginas: /?cp=11002 o /?q=sopranis
+const params = new URLSearchParams(location.search);
+if (params.get("cp") && [...cp.options].some((o) => o.value === params.get("cp"))) cp.value = params.get("cp")!;
+if (params.get("q")) q.value = params.get("q")!;
+
 [q, group, cp, companies].forEach((el) => el.addEventListener("input", render));
 render();
