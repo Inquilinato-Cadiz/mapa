@@ -1,6 +1,8 @@
 ---
 import Base from "../layouts/Base.astro";
 import stats from "../data/stats.json";
+
+const postalCodes = Object.entries(stats.by_postal_code).filter(([cp]) => /^11\d{3}$/.test(cp)).sort();
 ---
 
 <Base title="Mapa de viviendas turísticas de Cádiz" fullBleed>
@@ -29,7 +31,7 @@ import stats from "../data/stats.json";
           <label class="block"><span class="text-xs text-neutral-600">Código postal</span>
             <select id="cp" class="mt-1 w-full rounded-md border border-neutral-300 px-2 py-2">
               <option value="">Todos</option>
-              {Object.entries(stats.by_postal_code).filter(([cp]) => /^11\d{3}$/.test(cp)).sort().map(([cp, n]) => <option value={cp}>{`${cp} (${n})`}</option>)}
+              {postalCodes.map(([cp, n]) => <option value={cp}>{`${cp} (${n})`}</option>)}
             </select>
           </label>
         </div>
