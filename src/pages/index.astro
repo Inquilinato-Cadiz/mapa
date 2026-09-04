@@ -1,0 +1,56 @@
+---
+import Base from "../layouts/Base.astro";
+import stats from "../data/stats.json";
+---
+
+<Base title="Mapa de viviendas turísticas de Cádiz" fullBleed>
+  <div class="grid h-[calc(100vh-56px)] min-h-[560px] grid-rows-[auto_1fr] lg:grid-cols-[360px_1fr] lg:grid-rows-1">
+    <aside class="overflow-y-auto border-b border-neutral-200 bg-white p-4 lg:border-b-0 lg:border-r">
+      <h1 class="display text-3xl">Viviendas turísticas en Cádiz</h1>
+      <p class="mt-2 text-sm text-neutral-600">
+        <strong>{stats.total.toLocaleString("es-ES")}</strong> alojamientos turísticos registrados y <strong>{stats.places.toLocaleString("es-ES")}</strong> plazas
+        en una ciudad que pierde vecinas. Datos oficiales de la Junta, actualizados el {stats.source_updated_at}.
+      </p>
+
+      <form id="filters" class="mt-4 space-y-3 text-sm" onsubmit="return false">
+        <label class="block">
+          <span class="font-medium">¿Hay licencia turística en tu calle?</span>
+          <input id="q" type="search" placeholder="Escribe la calle: Sopranis, Plocia…" autocomplete="off"
+            class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-brand" />
+        </label>
+        <div class="grid grid-cols-2 gap-3">
+          <label class="block"><span class="text-xs text-neutral-600">Tipo</span>
+            <select id="group" class="mt-1 w-full rounded-md border border-neutral-300 px-2 py-2">
+              <option value="">Todos</option>
+              <option value="Completa">Vivienda completa</option>
+              <option value="Por habitaciones">Por habitaciones</option>
+            </select>
+          </label>
+          <label class="block"><span class="text-xs text-neutral-600">Código postal</span>
+            <select id="cp" class="mt-1 w-full rounded-md border border-neutral-300 px-2 py-2">
+              <option value="">Todos</option>
+              {Object.entries(stats.by_postal_code).filter(([cp]) => /^11\d{3}$/.test(cp)).sort().map(([cp, n]) => <option value={cp}>{cp} ({n})</option>)}
+            </select>
+          </label>
+        </div>
+        <label class="flex items-center gap-2"><input id="companies" type="checkbox" /> Sólo las que son de empresas</label>
+        <p id="count" class="text-neutral-600" aria-live="polite">Cargando…</p>
+      </form>
+
+      <div class="mt-4 rounded-md border border-neutral-200 bg-neutral-50 p-3 text-xs text-neutral-600">
+        <p class="font-medium text-neutral-800">Cómo leerlo</p>
+        <ul class="mt-1 list-disc space-y-1 pl-4">
+          <li>Cada punto es un alojamiento inscrito en el Registro de Turismo de Andalucía (VUT o apartamento turístico).</li>
+          <li>Los titulares que son personas físicas aparecen como «particular»: la Junta no publica su nombre y nosotras tampoco.</li>
+          <li>Si tu piso o tu edificio aparece y no lo sabías, o el piso donde vives se anuncia sin estar aquí, <a href="/denuncia/" class="underline">cuéntanoslo</a>.</li>
+        </ul>
+      </div>
+
+      <ul id="results" class="mt-4 hidden divide-y divide-neutral-100 rounded-md border border-neutral-200 text-sm"></ul>
+    </aside>
+
+    <div id="map" class="min-h-[400px] bg-neutral-100" role="region" aria-label="Mapa de viviendas turísticas"></div>
+  </div>
+</Base>
+
+<script src="../scripts/map.ts"></script>

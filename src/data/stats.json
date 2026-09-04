@@ -1,0 +1,109 @@
+{
+  "generated_at": "2026-09-04",
+  "source_updated_at": "2026-09-04",
+  "total": 2377,
+  "skipped_without_valid_coordinates": 2,
+  "places": 11307,
+  "by_type": {
+    "VUT": 2375,
+    "AT": 2
+  },
+  "by_group": {
+    "Completa": 2272,
+    "Por habitaciones": 103,
+    "Conjunto": 1,
+    "Edificio/Complejo": 1
+  },
+  "by_postal_code": {
+    "1008": 1,
+    "1100": 1,
+    "11001": 215,
+    "11002": 413,
+    "11003": 301,
+    "11004": 231,
+    "11005": 294,
+    "11006": 117,
+    "11007": 82,
+    "11008": 191,
+    "11009": 127,
+    "11010": 198,
+    "11011": 171,
+    "11012": 35
+  },
+  "by_year": {
+    "2005": 1,
+    "2016": 173,
+    "2017": 235,
+    "2018": 341,
+    "2019": 443,
+    "2020": 307,
+    "2021": 371,
+    "2022": 323,
+    "2023": 69,
+    "2024": 74,
+    "2025": 40
+  },
+  "companies": [
+    {
+      "name": "ALQUILER VACACIONAL TURISMO E INNOVACIÓN SOCIAL SCA",
+      "count": 83
+    },
+    {
+      "name": "DUNA BEDUINA SERVICIOS TURISTÍCOS, S.L.",
+      "count": 78
+    },
+    {
+      "name": "APARTMENTS TIME S.L.",
+      "count": 55
+    },
+    {
+      "name": "AC GESTION CADIZ S.L.",
+      "count": 39
+    },
+    {
+      "name": "LITTLE APARTMENTS S.L.",
+      "count": 20
+    },
+    {
+      "name": "GADES GESTIÓN TURÍSTICA SL",
+      "count": 11
+    },
+    {
+      "name": "GADES 2012 DESARROLLOS INMOBILIARIOS,S.L.",
+      "count": 6
+    },
+    {
+      "name": "GENTEEL HOME GESTORA S.L.U.",
+      "count": 5
+    },
+    {
+      "name": "CADIZ PLANET SL",
+      "count": 3
+    },
+    {
+      "name": "CONTRATACIONES HOSTELERAS S.L.U.",
+      "count": 3
+    },
+    {
+      "name": "SERAE S. COOP. AND.",
+      "count": 3
+    },
+    {
+      "name": "SERVICIOS INMOBILIARIOS SAN SEVERIANO S.L.",
+      "count": 3
+    },
+    {
+      "name": "GRUPO HOTELES PLAYA S.A",
+      "count": 2
+    },
+    {
+      "name": "Plaza de la Luz SL",
+      "count": 2
+    },
+    {
+      "name": "EXCMO. AYUNTAMIENTO DE CADIZ",
+      "count": 2
+    }
+  ],
+  "individuals_count": 1869
+}

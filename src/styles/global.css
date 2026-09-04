@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #f05a28;
+  --color-brand-dark: #c9451c;
+  --color-ink: #171717;
+  --font-display: "Anton", "Impact", "Arial Narrow", sans-serif;
+}
+
+html {
+  color: var(--color-ink);
+  background: #fafafa;
+}
+
+.display {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 0.95;
+}
+
+/* Leaflet dentro de nuestro layout */
+.leaflet-container {
+  font: inherit;
+}
+.leaflet-popup-content {
+  margin: 12px 14px;
+  line-height: 1.4;
+}
+.marker-cluster-small,
+.marker-cluster-medium,
+.marker-cluster-large {
+  background: rgb(240 90 40 / 0.35);
+}
+.marker-cluster-small div,
+.marker-cluster-medium div,
+.marker-cluster-large div {
+  background: #f05a28;
+  color: white;
+  font-weight: 700;
+}

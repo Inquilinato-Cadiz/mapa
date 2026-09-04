@@ -1,0 +1,60 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  fullBleed?: boolean;
+}
+
+const { title, description = "Mapa de viviendas turísticas de Cádiz y herramientas para inquilinas. Sindicato de Inquilinas e Inquilinos de Cádiz.", fullBleed = false } = Astro.props;
+const nav = [
+  { href: "/", label: "Mapa" },
+  { href: "/datos/", label: "Datos" },
+  { href: "/herramientas/", label: "Herramientas" },
+  { href: "/denuncia/", label: "Denunciar" },
+];
+const path = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · Sindicato de Inquilinas de Cádiz</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <header class="bg-brand text-white">
+      <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
+        <a href="https://inquilinatocadiz.org/" class="display text-xl leading-none">
+          Sindicato de Inquilinas <span class="font-sans text-base font-normal normal-case tracking-normal">· Cádiz</span>
+        </a>
+        <nav class="flex gap-4 text-sm font-medium">
+          {nav.map((item) => (
+            <a href={item.href} class:list={["hover:underline", { "underline decoration-2 underline-offset-4": path === item.href || (item.href !== "/" && path.startsWith(item.href)) }]}>{item.label}</a>
+          ))}
+        </nav>
+      </div>
+    </header>
+
+    <main class:list={["flex-1", { "mx-auto w-full max-w-6xl px-4 py-8": !fullBleed }]}>
+      <slot />
+    </main>
+
+    <footer class="border-t border-neutral-200 bg-white text-sm text-neutral-600">
+      <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-4">
+        <p>Datos de viviendas turísticas: <a href="https://www.juntadeandalucia.es/datosabiertos/portal/dataset/openrta" class="underline hover:no-underline" rel="noopener">Registro de Turismo de Andalucía (OpenRTA)</a>, CC BY 4.0. Mapa: © OpenStreetMap.</p>
+        <p><a href="https://inquilinatocadiz.org/" class="underline hover:no-underline">inquilinatocadiz.org</a> · <a href="https://inquilinatocadiz.org/afiliate/" class="underline hover:no-underline">Afíliate</a></p>
+      </div>
+    </footer>
+  </body>
+</html>

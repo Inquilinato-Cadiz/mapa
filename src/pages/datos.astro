@@ -1,0 +1,76 @@
+---
+import Base from "../layouts/Base.astro";
+import stats from "../data/stats.json";
+
+const fmt = (n: number) => n.toLocaleString("es-ES");
+const byCp = Object.entries(stats.by_postal_code).filter(([cp]) => /^11\d{3}$/.test(cp)).sort((a, b) => b[1] - a[1]);
+const years = Object.entries(stats.by_year).filter(([y]) => Number(y) >= 2010);
+const maxYear = Math.max(...years.map(([, n]) => n));
+const companiesTotal = stats.companies.reduce((s, c) => s + c.count, 0);
+---
+
+<Base title="Datos de la turistificación en Cádiz">
+  <h1 class="display text-4xl">Cádiz en cifras</h1>
+  <p class="mt-2 max-w-2xl text-neutral-600">Lo que dice el Registro de Turismo de Andalucía sobre la ciudad de Cádiz. Fuente oficial, actualizada el {stats.source_updated_at}. Sólo se cuentan viviendas de uso turístico y apartamentos turísticos con coordenadas válidas dentro del término municipal.</p>
+
+  <dl class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    {[
+      ["Alojamientos turísticos", fmt(stats.total)],
+      ["Plazas", fmt(stats.places)],
+      ["Por habitaciones", fmt(stats.by_group["Por habitaciones"] ?? 0)],
+      ["De empresas (identificadas)", fmt(stats.total - stats.individuals_count)],
+    ].map(([label, value]) => (
+      <div class="rounded-lg border border-neutral-200 bg-white p-5">
+        <dt class="text-sm text-neutral-600">{label}</dt>
+        <dd class="display mt-1 text-5xl text-brand">{value}</dd>
+      </div>
+    ))}
+  </dl>
+
+  <div class="mt-10 grid gap-8 lg:grid-cols-2">
+    <section>
+      <h2 class="display text-2xl">Por código postal</h2>
+      <table class="mt-3 w-full text-sm">
+        <thead class="text-left text-xs uppercase text-neutral-500"><tr><th class="py-1">CP</th><th class="py-1">Alojamientos</th><th class="py-1 w-1/2"></th></tr></thead>
+        <tbody class="divide-y divide-neutral-100">
+          {byCp.map(([cp, n]) => (
+            <tr>
+              <td class="py-1.5 font-medium"><a href={`/?cp=${cp}`} class="hover:underline">{cp}</a></td>
+              <td class="py-1.5">{fmt(n)}</td>
+              <td class="py-1.5"><div class="h-3 rounded bg-brand" style={`width: ${Math.round((n / byCp[0][1]) * 100)}%`}></div></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2 class="display text-2xl">Altas por año</h2>
+      <p class="mt-1 text-sm text-neutral-600">Año de inscripción en el registro. Las bajas no aparecen: el registro sólo publica lo que sigue activo.</p>
+      <ul class="mt-3 space-y-1.5 text-sm">
+        {years.map(([year, n]) => (
+          <li class="grid grid-cols-[3.5rem_1fr_3rem] items-center gap-2">
+            <span class="font-medium">{year}</span>
+            <div class="h-4 rounded bg-neutral-200"><div class="h-4 rounded bg-brand" style={`width: ${Math.round((n / maxYear) * 100)}%`}></div></div>
+            <span class="text-right text-neutral-600">{fmt(n)}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </div>
+
+  <section class="mt-10">
+    <h2 class="display text-2xl">Empresas con más alojamientos</h2>
+    <p class="mt-1 max-w-2xl text-sm text-neutral-600">El registro sólo publica el nombre del titular cuando es una empresa. {fmt(stats.individuals_count)} alojamientos son de particulares y no se puede saber cuántos tiene cada uno. Las {stats.companies.length} empresas de esta lista suman {fmt(companiesTotal)}.</p>
+    <ol class="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+      {stats.companies.map((c, i) => (
+        <li class="flex items-baseline justify-between gap-3 rounded-md border border-neutral-200 bg-white px-4 py-2 text-sm">
+          <span><span class="text-neutral-400">{i + 1}.</span> {c.name}</span>
+          <strong class="text-brand">{c.count}</strong>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <p class="mt-10 text-xs text-neutral-500">Generado el {stats.generated_at}. {stats.skipped_without_valid_coordinates} registros descartados por coordenadas ausentes o fuera del municipio. Este sitio se regenera automáticamente cada mes.</p>
+</Base>

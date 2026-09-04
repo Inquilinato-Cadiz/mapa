@@ -1,0 +1,42 @@
+---
+import Base from "../../layouts/Base.astro";
+import Aviso from "../../components/Aviso.astro";
+const field = "mt-1 block w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-brand";
+---
+
+<Base title="Calculadora de plazos del alquiler">
+  <div class="max-w-2xl">
+    <p class="text-sm text-neutral-500"><a href="/herramientas/" class="hover:underline">Herramientas</a> / Plazos</p>
+    <h1 class="display text-4xl">¿Hasta cuándo puedo quedarme?</h1>
+    <p class="mt-2 text-neutral-600">Aunque el contrato ponga un año, la ley te da derecho a prorrogarlo. Estas son tus fechas.</p>
+
+    <form id="plazos" class="mt-6 grid gap-4 rounded-lg border border-neutral-200 bg-white p-5 sm:grid-cols-2" onsubmit="return false">
+      <label class="block"><span class="text-sm font-medium">Inicio del contrato</span><input id="start" type="date" required class={field} /></label>
+      <label class="block"><span class="text-sm font-medium">Duración que pone el contrato (meses)</span><input id="months" type="number" min="1" max="120" value="12" required class={field} /></label>
+      <label class="block sm:col-span-2"><span class="text-sm font-medium">¿Quién es el arrendador?</span>
+        <select id="landlord" class={field}>
+          <option value="natural">Una persona (particular)</option>
+          <option value="legal">Una empresa, fondo, sociedad o entidad</option>
+        </select>
+      </label>
+      <button type="submit" class="rounded-md bg-brand px-4 py-2 font-bold text-white hover:bg-brand-dark sm:col-span-2">Calcular</button>
+    </form>
+
+    <section id="result" class="mt-6 hidden rounded-lg border-2 border-brand bg-white p-5"></section>
+
+    <Aviso />
+
+    <details class="mt-6 text-sm text-neutral-700">
+      <summary class="cursor-pointer font-medium">Qué dice la ley</summary>
+      <ul class="mt-2 list-disc space-y-1 pl-5">
+        <li>Contratos desde el 6 de marzo de 2019: prórroga obligatoria hasta 5 años (7 si el arrendador es persona jurídica), y después prórroga tácita anual hasta 3 años más (LAU, arts. 9 y 10).</li>
+        <li>Para no prorrogar, el arrendador debe avisarte con 4 meses de antelación al fin de la prórroga obligatoria; tú, con 2 meses.</li>
+        <li>Contratos entre el 6 de junio de 2013 y el 5 de marzo de 2019: 3 años obligatorios y 1 de prórroga tácita, con 30 días de preaviso.</li>
+        <li>Puedes irte a partir de los 6 meses avisando con 30 días. Si el contrato lo dice, pueden pedirte hasta una mensualidad por cada año que falte, proporcional (art. 11).</li>
+        <li>La venta del piso no acaba con tu contrato durante la prórroga obligatoria (art. 14). La fianza deben devolvértela en el mes siguiente a entregar las llaves (art. 36).</li>
+      </ul>
+    </details>
+  </div>
+</Base>
+
+<script src="../../scripts/plazos.ts"></script>

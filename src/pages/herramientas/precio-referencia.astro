@@ -1,0 +1,38 @@
+---
+import Base from "../../layouts/Base.astro";
+import Aviso from "../../components/Aviso.astro";
+---
+
+<Base title="Precio de referencia del alquiler en Cádiz">
+  <div class="max-w-2xl">
+    <p class="text-sm text-neutral-500"><a href="/herramientas/" class="hover:underline">Herramientas</a> / Precio de referencia</p>
+    <h1 class="display text-4xl">¿Cuánto se paga por aquí?</h1>
+    <p class="mt-2 text-neutral-600">El Estado publica un precio de referencia del alquiler por zonas a partir de los datos fiscales reales de los contratos. Sirve para saber si te están cobrando de más y para negociar con datos.</p>
+
+    <section class="mt-6 rounded-lg border border-neutral-200 bg-white p-5">
+      <h2 class="display text-2xl">Cómo consultarlo</h2>
+      <ol class="mt-3 list-decimal space-y-2 pl-5 text-neutral-700">
+        <li>Entra en el <a href="https://www.mivau.gob.es/vivienda/alquila-bien-es-tu-derecho/serpavi" class="underline" rel="noopener" target="_blank">Sistema Estatal de Referencia del Precio del Alquiler (SERPAVI)</a> del Ministerio de Vivienda.</li>
+        <li>Busca tu dirección o tu sección censal en el mapa.</li>
+        <li>Introduce los datos de la vivienda: metros, planta, ascensor, estado, año.</li>
+        <li>Obtendrás un rango (mínimo y máximo) de renta mensual de referencia para viviendas como la tuya en esa zona.</li>
+      </ol>
+    </section>
+
+    <section class="mt-6 rounded-lg border border-neutral-200 bg-white p-5">
+      <h2 class="display text-2xl">Para qué sirve en Cádiz</h2>
+      <ul class="mt-3 list-disc space-y-2 pl-5 text-neutral-700">
+        <li><strong>Hoy no es un tope legal.</strong> El precio de referencia sólo limita las rentas en las zonas declaradas de mercado residencial tensionado, y la Junta de Andalucía no ha declarado ninguna. Cádiz cumple los requisitos de sobra: reclamarlo es parte de la lucha.</li>
+        <li><strong>Sí es un argumento.</strong> Si te piden muy por encima del rango, tienes un dato oficial para negociar la renta al firmar o al renovar, y para explicar en la asamblea qué está pasando en tu barrio.</li>
+        <li><strong>Sirve para el observatorio.</strong> Comparar lo que pide el mercado con lo que dice el Estado que se paga de verdad es la mejor forma de mostrar la burbuja.</li>
+      </ul>
+    </section>
+
+    <section class="mt-6 rounded-lg border border-neutral-200 bg-white p-5">
+      <h2 class="display text-2xl">Si algún día Cádiz es zona tensionada</h2>
+      <p class="mt-3 text-neutral-700">Los contratos nuevos no podrían superar la renta del contrato anterior (actualizada) y, si el arrendador es gran tenedor o la vivienda no ha estado alquilada en los últimos cinco años, tampoco el precio de referencia. Mientras, lo que aplica es lo que ya tienes en las otras herramientas: prórrogas, actualización con tope y cláusulas nulas.</p>
+    </section>
+
+    <Aviso />
+  </div>
+</Base>
