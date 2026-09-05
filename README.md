@@ -7,7 +7,7 @@ Sitio estático del Sindicato de Inquilinas e Inquilinos de Cádiz en `mapa.inqu
 - `/` Mapa de viviendas de uso turístico y apartamentos turísticos de Cádiz con buscador por calle, filtros por tipo, código postal y titular empresa.
 - `/datos/` Cifras: totales, plazas, por código postal, altas por año y empresas con más alojamientos.
 - `/denuncia/` Cómo denunciar una vivienda turística ilegal.
-- `/herramientas/` Calculadora de actualización de renta (IRAV/IPC), calculadora de plazos LAU, comprobador de cláusulas del contrato y guía del precio de referencia.
+- `/utilidades/` Calculadora de actualización de renta (IRAV/IPC), calculadora de plazos LAU, comprobador de cláusulas del contrato y guía del precio de referencia.
 
 ## Datos
 
