@@ -31,9 +31,13 @@ npm run check     # tipos
 npm run build
 ```
 
-## Despliegue
+## Despliegue y operación
 
-GitHub Pages desde Actions. El dominio `mapa.inquilinatocadiz.org` necesita un registro CNAME en Cloudflare apuntando a `inquilinato-cadiz.github.io` (modo DNS only o proxied, ambos funcionan) y el fichero `public/CNAME` ya está.
+- **GitHub Pages desde Actions** (`.github/workflows/deploy.yml`): cada push a `main` construye y publica. El repo es público porque Pages en el plan gratuito lo exige.
+- **Dominio**: `mapa.inquilinatocadiz.org` con `CNAME → inquilinato-cadiz.github.io` en Cloudflare (DNS only) y `public/CNAME`. Certificado de GitHub emitido y HTTPS forzado (Settings → Pages). Si el certificado se atasca, quitar y volver a poner el dominio en Settings → Pages.
+- **Datos**: `update-data.yml` corre el día 1 de cada mes a las 05:17 UTC; también a mano en Actions → "Actualizar datos" → Run workflow. Si OpenRTA cambia el formato, el script falla y no hay commit: los datos anteriores siguen publicados.
+- **Enlaces desde la web**: menú Herramientas de inquilinatocadiz.org (Mapa, Datos, Utilidades, Denunciar). La sección se llamó `/herramientas/` en la primera versión; hay redirecciones.
+- **Índices para la calculadora de renta**: `src/data/indices.json`, a mano. El IRAV lo publica el INE mensualmente y la calculadora siempre permite escribirlo.
 
 ## Origen
 
