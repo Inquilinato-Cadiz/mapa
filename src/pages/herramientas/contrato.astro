@@ -2,35 +2,49 @@
 import Base from "../../layouts/Base.astro";
 import Aviso from "../../components/Aviso.astro";
 
+// Las explicaciones dependen de la fecha de firma (régimen legal) y del tipo de arrendador: están en contrato.ts.
 const checks = [
-  { id: "duration", level: "info", q: "Dura menos de 5 años (7 si el arrendador es una empresa)", a: "No es ilegal, pero da igual lo que ponga: tienes derecho a prorrogar hasta 5 o 7 años. Calcula tus fechas en la herramienta de plazos.", ref: "LAU art. 9" },
-  { id: "waiver", level: "alto", q: "Renuncias a la prórroga o aceptas irte cuando te lo pidan", a: "Nula. No se puede renunciar a la prórroga obligatoria por adelantado; sólo el arrendador puede recuperarlo por necesidad propia, a partir del primer año, con dos meses de aviso y si constaba en el contrato.", ref: "LAU arts. 6 y 9.3" },
-  { id: "deposit", level: "alto", q: "Fianza de más de un mes", a: "La fianza legal es una mensualidad. Pueden pedir garantías adicionales (aval, depósito) hasta dos mensualidades más en contratos de hasta 5 o 7 años, pero no llamarlo fianza ni superarlo.", ref: "LAU art. 36" },
-  { id: "agency", level: "alto", q: "Te cobran los honorarios de la agencia o la gestión del contrato", a: "Desde el 26 de mayo de 2023 los gastos de gestión inmobiliaria y de formalización del contrato son siempre del arrendador. Puedes reclamarlos aunque los hayas pagado.", ref: "LAU art. 20.1, Ley 12/2023" },
-  { id: "update", level: "medio", q: "La renta se actualiza «libremente», «según mercado» o sin decir con qué índice", a: "La actualización tiene que estar pactada y referida a un índice. Y nunca puede superar el tope legal: IRAV para contratos desde el 26/05/2023. Sin cláusula, no hay actualización.", ref: "LAU art. 18" },
-  { id: "seasonal", level: "alto", q: "Es un contrato «de temporada» pero es tu vivienda habitual", a: "Si vives ahí de forma permanente, el contrato es de vivienda aunque lo llamen de temporada, y se aplican las prórrogas y límites de la LAU. Es un fraude muy extendido en Cádiz.", ref: "LAU arts. 2 y 3; jurisprudencia" },
-  { id: "census", level: "alto", q: "Te prohíben empadronarte", a: "No pueden impedirlo. Empadronarte donde vives es tu obligación legal y tu derecho, y no necesitas permiso del propietario.", ref: "Ley 7/1985 de Bases del Régimen Local, art. 15" },
-  { id: "penalty", level: "medio", q: "Penalización por irte antes superior a un mes de renta por año que falte", a: "Puedes desistir a partir del sexto mes avisando con 30 días. La indemnización máxima es una mensualidad por cada año que quede, proporcional a los meses. Y sólo si el contrato la recoge.", ref: "LAU art. 11" },
-  { id: "repairs", level: "medio", q: "Las reparaciones y obras de conservación corren de tu cuenta", a: "Las reparaciones necesarias para conservar la vivienda habitable son del arrendador. A ti te corresponden sólo las pequeñas reparaciones por el desgaste del uso ordinario.", ref: "LAU art. 21" },
-  { id: "expenses", level: "medio", q: "Pagas IBI, comunidad u otros gastos sin que el contrato diga el importe anual", a: "Sólo pueden repercutirte gastos generales si están pactados por escrito y con su importe anual a la fecha del contrato. Sin importe, no procede.", ref: "LAU art. 20.1" },
-  { id: "entry", level: "alto", q: "El propietario puede entrar cuando quiera o hacer visitas sin avisar", a: "Es tu domicilio y es inviolable. Sólo puede entrar con tu consentimiento; puedes pactar visitas con antelación razonable, pero nunca sin permiso.", ref: "Constitución art. 18.2" },
-  { id: "sale", level: "medio", q: "Si venden el piso tienes que irte", a: "La venta no acaba con tu contrato durante la prórroga obligatoria. El nuevo propietario se convierte en tu arrendador con las mismas condiciones.", ref: "LAU art. 14" },
+  { id: "duration", q: "Dura un año o menos de lo que marca la ley como prórroga obligatoria" },
+  { id: "waiver", q: "Renuncias a la prórroga o aceptas irte cuando te lo pidan" },
+  { id: "deposit", q: "Fianza de más de un mes, o garantías adicionales muy altas" },
+  { id: "agency", q: "Te cobran los honorarios de la agencia o la gestión del contrato" },
+  { id: "update", q: "La renta se actualiza «libremente», «según mercado» o sin decir con qué índice" },
+  { id: "seasonal", q: "Es un contrato «de temporada» pero es tu vivienda habitual" },
+  { id: "census", q: "Te prohíben empadronarte" },
+  { id: "penalty", q: "Penalización por irte antes superior a un mes de renta por año que falte" },
+  { id: "repairs", q: "Las reparaciones y obras de conservación corren de tu cuenta" },
+  { id: "expenses", q: "Pagas IBI, comunidad u otros gastos sin que el contrato diga el importe anual" },
+  { id: "entry", q: "El propietario puede entrar cuando quiera o hacer visitas sin avisar" },
+  { id: "sale", q: "Si venden el piso tienes que irte" },
 ];
+const field = "mt-1 block w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-brand";
 ---
 
 <Base title="Comprobador de contrato de alquiler">
   <div class="max-w-2xl">
     <p class="text-sm text-neutral-500"><a href="/herramientas/" class="hover:underline">Herramientas</a> / Comprobador</p>
     <h1 class="display text-4xl">¿Tiene trampas mi contrato?</h1>
-    <p class="mt-2 text-neutral-600">Marca lo que aparezca en tu contrato. Te decimos qué es nulo, qué es abusivo y con qué artículo defenderte.</p>
+    <p class="mt-2 text-neutral-600">Lo que vale y lo que no depende de cuándo firmaste y de quién es el arrendador. Marca lo que aparezca en tu contrato y te decimos qué es nulo, qué es abusivo y con qué artículo defenderte.</p>
 
-    <form id="contrato" class="mt-6 divide-y divide-neutral-100 rounded-lg border border-neutral-200 bg-white" onsubmit="return false">
-      {checks.map((c) => (
-        <label class="flex cursor-pointer items-start gap-3 px-5 py-3 hover:bg-neutral-50">
-          <input type="checkbox" name="check" value={c.id} class="mt-1" />
-          <span>{c.q}</span>
+    <form id="contrato" class="mt-6 rounded-lg border border-neutral-200 bg-white" onsubmit="return false">
+      <div class="grid gap-4 border-b border-neutral-100 p-5 sm:grid-cols-2">
+        <label class="block"><span class="text-sm font-medium">Fecha de firma del contrato</span><input id="signed" type="date" required class={field} /></label>
+        <label class="block"><span class="text-sm font-medium">¿Quién es el arrendador?</span>
+          <select id="landlord" class={field}>
+            <option value="natural">Una persona (particular)</option>
+            <option value="legal">Una empresa, fondo, sociedad o entidad</option>
+          </select>
         </label>
-      ))}
+        <p id="regime" class="text-sm text-neutral-600 sm:col-span-2"></p>
+      </div>
+      <div class="divide-y divide-neutral-100">
+        {checks.map((c) => (
+          <label class="flex cursor-pointer items-start gap-3 px-5 py-3 hover:bg-neutral-50">
+            <input type="checkbox" name="check" value={c.id} class="mt-1" />
+            <span>{c.q}</span>
+          </label>
+        ))}
+      </div>
       <div class="px-5 py-4">
         <button type="submit" class="rounded-md bg-brand px-4 py-2 font-bold text-white hover:bg-brand-dark">Ver resultado</button>
       </div>
@@ -42,7 +56,4 @@ const checks = [
   </div>
 </Base>
 
-<script define:vars={{ checks }}>
-  window.__checks = checks;
-</script>
 <script src="../../scripts/contrato.ts"></script>

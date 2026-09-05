@@ -72,11 +72,16 @@ const active = (href: string) => path === href || (href !== "/" && path.startsWi
       <slot />
     </main>
 
-    <footer class="border-t border-neutral-200 bg-white text-sm text-neutral-600">
-      <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-5">
-        <a href="https://inquilinatocadiz.org/"><img src="/logo-cabecera.png" alt="Sindicato de Inquilinas e Inquilinos de Cádiz" width="726" height="162" class="h-9 w-auto" /></a>
-        <p class="max-w-xl">Datos de viviendas turísticas: <a href="https://www.juntadeandalucia.es/datosabiertos/portal/dataset/openrta" class="underline hover:no-underline" rel="noopener">Registro de Turismo de Andalucía (OpenRTA)</a>, CC BY 4.0. Mapa: © OpenStreetMap.</p>
-        <div class="flex gap-4 text-lg text-neutral-700">
+    <footer class="bg-neutral-950 text-white">
+      <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-3 px-4 py-4">
+        <a href="https://inquilinatocadiz.org/" class="display text-2xl italic leading-none" title="Sindicato de Inquilinas e Inquilinos de Cádiz">SIC</a>
+        <nav class="display flex flex-wrap items-center gap-x-6 gap-y-1 text-sm italic tracking-wide">
+          <a href="https://inquilinatocadiz.org/participa/" class="hover:text-brand">Participa</a>
+          <a href="https://inquilinatocadiz.org/aviso-legal-y-privacidad/" class="hover:text-brand">Aviso legal y privacidad</a>
+          <a href="/datos/" class="hover:text-brand">Datos</a>
+          <a href="https://www.juntadeandalucia.es/datosabiertos/portal/dataset/openrta" rel="noopener" class="hover:text-brand">Fuente: OpenRTA (CC BY 4.0)</a>
+        </nav>
+        <div class="flex gap-4 text-lg">
           {social.map((s) => (
             <a href={s.href} aria-label={s.label} title={s.label} rel="noopener" target="_blank" class="hover:text-brand"><i class={s.icon} aria-hidden="true"></i></a>
           ))}
