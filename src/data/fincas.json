@@ -1,0 +1,68 @@
+{
+  "generated_at": "2026-09-07",
+  "source": "Dirección General del Catastro",
+  "min_homes": 5,
+  "total": 642,
+  "homes": 9530,
+  "thresholds": {
+    "5": 642,
+    "10": 170,
+    "20": 77,
+    "50": 37,
+    "100": 17
+  },
+  "by_postal_code": {
+    "11001": {
+      "fincas": 66,
+      "viviendas": 419
+    },
+    "11002": {
+      "fincas": 85,
+      "viviendas": 888
+    },
+    "11003": {
+      "fincas": 59,
+      "viviendas": 373
+    },
+    "11004": {
+      "fincas": 78,
+      "viviendas": 543
+    },
+    "11005": {
+      "fincas": 107,
+      "viviendas": 722
+    },
+    "11006": {
+      "fincas": 45,
+      "viviendas": 466
+    },
+    "11007": {
+      "fincas": 32,
+      "viviendas": 1047
+    },
+    "11008": {
+      "fincas": 22,
+      "viviendas": 657
+    },
+    "11009": {
+      "fincas": 11,
+      "viviendas": 506
+    },
+    "11010": {
+      "fincas": 16,
+      "viviendas": 718
+    },
+    "11011": {
+      "fincas": 5,
+      "viviendas": 487
+    },
+    "11012": {
+      "fincas": 22,
+      "viviendas": 1418
+    },
+    "sin dato": {
+      "fincas": 94,
+      "viviendas": 1286
+    }
+  }
+}
