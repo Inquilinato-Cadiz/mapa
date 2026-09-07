@@ -1,4 +1,7 @@
 @import "tailwindcss";
+/* Fuente e iconos servidos desde este mismo sitio: ninguna visita pasa por Google ni por un CDN. */
+@import "@fontsource/anton";
+@import "@fortawesome/fontawesome-free/css/all.min.css";
 
 @theme {
   --color-brand: #f05a28;
