@@ -4,8 +4,8 @@ Sitio estático del Sindicato de Inquilinas e Inquilinos de Cádiz en `mapa.inqu
 
 ## Qué hay
 
-- `/` Mapa de viviendas de uso turístico y apartamentos turísticos de Cádiz con buscador por calle, filtros por tipo, código postal y titular empresa.
-- `/datos/` Cifras: totales, plazas, por código postal, altas por año y empresas con más alojamientos.
+- `/` Mapa de viviendas de uso turístico y apartamentos turísticos de los 45 municipios de la provincia de Cádiz: selector de municipio, buscador por calle y filtros por tipo, código postal y titular empresa. `/?m=tarifa` abre un municipio; `&cp=11380` filtra un código postal.
+- `/datos/` Cifras de la provincia y ranking por municipio; `/datos/<municipio>/` para cada uno: totales, plazas, por código postal, altas por año y empresas con más alojamientos.
 - `/denuncia/` Cómo denunciar una vivienda turística ilegal.
 - `/utilidades/` Calculadora de actualización de renta (IRAV/IPC), calculadora de plazos LAU, comprobador de cláusulas del contrato y guía del precio de referencia.
 
@@ -13,7 +13,7 @@ Sitio estático del Sindicato de Inquilinas e Inquilinos de Cádiz en `mapa.inqu
 
 Fuente: [OpenRTA](https://www.juntadeandalucia.es/datosabiertos/portal/dataset/openrta), el Registro de Turismo de Andalucía en datos abiertos (CC BY 4.0, actualización diaria).
 
-`npm run data` ejecuta `scripts/fetch-openrta.mjs`: descarga los registros del municipio de Cádiz, se queda con viviendas de uso turístico y apartamentos turísticos, **elimina email y teléfonos**, reproyecta las coordenadas de EPSG:25830 a WGS84, descarta las que caen fuera del término municipal y escribe `public/data/vut-cadiz.geojson` y `src/data/stats.json`.
+`npm run data` ejecuta `scripts/fetch-openrta.mjs`: pide a la API los registros de cada uno de los 45 municipios de la provincia (la API no pagina y corta en 10.000, y ningún municipio se acerca), se queda con viviendas de uso turístico y apartamentos turísticos, **elimina email y teléfonos**, reproyecta las coordenadas de EPSG:25830 a WGS84, descarta las que caen fuera de la provincia o a más de 30 km del centro de su municipio y escribe un `public/data/municipios/<slug>.geojson` por municipio (el mapa carga sólo el elegido), el índice `src/data/municipios.json` y las cifras `src/data/stats.json`. Tarda unos dos minutos.
 
 Sobre los titulares: la Junta publica el nombre sólo cuando es una empresa; las personas físicas llegan anonimizadas y así se quedan. No se guarda ni se publica ningún dato de contacto.
 

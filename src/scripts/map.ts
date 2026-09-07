@@ -17,12 +17,15 @@ type Props = {
   holder_count: number | null;
 };
 type Feature = GeoJSON.Feature<GeoJSON.Point, Props>;
+type MunicipioFile = GeoJSON.FeatureCollection<GeoJSON.Point, Props> & {
+  municipio: { slug: string; name: string; total: number; places: number; source_updated_at: string | null };
+};
 
 // El plugin de clústeres se cuelga del L global, así que va después de Leaflet.
 (window as unknown as { L: typeof L }).L = L;
 await import("leaflet.markercluster");
 
-const map = L.map("map", { center: [36.528, -6.285], zoom: 14, minZoom: 12, maxZoom: 19 });
+const map = L.map("map", { center: [36.528, -6.285], zoom: 14, minZoom: 9, maxZoom: 19 });
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
   attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -33,19 +36,25 @@ const cluster = L.markerClusterGroup({ disableClusteringAtZoom: 18, maxClusterRa
 map.addLayer(cluster);
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+const muni = $<HTMLSelectElement>("muni");
 const q = $<HTMLInputElement>("q");
 const group = $<HTMLSelectElement>("group");
 const cp = $<HTMLSelectElement>("cp");
 const companies = $<HTMLInputElement>("companies");
 const count = $<HTMLParagraphElement>("count");
 const results = $<HTMLUListElement>("results");
+const muniName = $<HTMLElement>("muni-name");
+const muniStats = $<HTMLElement>("muni-stats");
 
+const fmt = (n: number) => n.toLocaleString("es-ES");
 const normalize = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] as string);
 
+let current = { slug: "", name: "" };
+
 const popup = (p: Props) => {
   const holder = p.holder
-    ? `<strong>${esc(p.holder)}</strong>${p.holder_count && p.holder_count > 1 ? ` <span class="text-neutral-500">(${p.holder_count} alojamientos en Cádiz)</span>` : ""}`
+    ? `<strong>${esc(p.holder)}</strong>${p.holder_count && p.holder_count > 1 ? ` <span class="text-neutral-500">(${p.holder_count} alojamientos en ${esc(current.name)})</span>` : ""}`
     : `<span class="text-neutral-600">Particular</span>`;
   const rows = [
     ["Tipo", `${p.type === "VUT" ? "Vivienda de uso turístico" : "Apartamento turístico"}${p.group ? ` · ${esc(p.group)}` : ""}`],
@@ -81,7 +90,7 @@ const render = () => {
   cluster.addLayers(visible.map((f) => markers.get(f)!));
 
   const places = visible.reduce((s, f) => s + (f.properties.places ?? 0), 0);
-  count.textContent = `${visible.length.toLocaleString("es-ES")} alojamientos · ${places.toLocaleString("es-ES")} plazas`;
+  count.textContent = `${fmt(visible.length)} alojamientos · ${fmt(places)} plazas`;
 
   if (term && visible.length > 0 && visible.length <= 40) {
     results.innerHTML = visible
@@ -95,31 +104,62 @@ const render = () => {
   }
 };
 
+// Los códigos postales dependen del municipio: se rellenan con los datos cargados.
+const fillPostalCodes = (wanted: string) => {
+  const counts = new Map<string, number>();
+  for (const f of all) {
+    const c = f.properties.postal_code;
+    if (c && /^11\d{3}$/.test(c)) counts.set(c, (counts.get(c) ?? 0) + 1);
+  }
+  cp.innerHTML = `<option value="">Todos</option>` + [...counts.entries()].sort().map(([c, n]) => `<option value="${c}">${c} (${n})</option>`).join("");
+  cp.value = counts.has(wanted) ? wanted : "";
+};
+
+const load = async (slug: string, wantedCp = "") => {
+  count.textContent = "Cargando…";
+  const data = (await (await fetch(`/data/municipios/${slug}.geojson`)).json()) as MunicipioFile;
+  current = { slug, name: data.municipio.name };
+  all = data.features;
+  markers.clear();
+  for (const f of all) {
+    const [lng, lat] = f.geometry.coordinates;
+    const marker = L.circleMarker([lat, lng], { radius: 6, color: "#fff", weight: 1, fillColor: color(f.properties), fillOpacity: 0.9 });
+    marker.bindPopup(popup(f.properties), { maxWidth: 320 });
+    markers.set(f, marker);
+  }
+  muniName.textContent = data.municipio.name;
+  muniStats.textContent = `${fmt(data.municipio.total)} alojamientos turísticos registrados y ${fmt(data.municipio.places)} plazas`;
+  fillPostalCodes(wantedCp);
+  if (all.length) map.fitBounds(L.featureGroup([...markers.values()]).getBounds(), { padding: [20, 20], maxZoom: 15 });
+  render();
+};
+
 results.addEventListener("click", (e) => {
   const id = (e.target as HTMLElement).closest("button")?.dataset.id;
   const f = all.find((x) => x.properties.id === id);
   if (!f) return;
-  const m = markers.get(f)!;
-  map.setView(m.getLatLng(), 18);
-  cluster.zoomToShowLayer(m, () => m.openPopup());
+  const marker = markers.get(f)!;
+  map.setView(marker.getLatLng(), 18);
+  cluster.zoomToShowLayer(marker, () => marker.openPopup());
 });
 
-const data = (await (await fetch("/data/vut-cadiz.geojson")).json()) as GeoJSON.FeatureCollection<GeoJSON.Point, Props>;
-all = data.features;
-for (const f of all) {
-  const [lng, lat] = f.geometry.coordinates;
-  const m = L.circleMarker([lat, lng], { radius: 6, color: "#fff", weight: 1, fillColor: color(f.properties), fillOpacity: 0.9 });
-  m.bindPopup(popup(f.properties), { maxWidth: 320 });
-  markers.set(f, m);
-}
-
-// Enlaces desde otras páginas: /?cp=11002 o /?q=sopranis
+// Enlaces desde otras páginas: /?m=tarifa, /?m=cadiz&cp=11002 o /?q=sopranis
 const params = new URLSearchParams(location.search);
-if (params.get("cp") && [...cp.options].some((o) => o.value === params.get("cp"))) cp.value = params.get("cp")!;
+const requested = params.get("m");
+const initial = requested && [...muni.options].some((o) => o.value === requested) ? requested : "cadiz";
+muni.value = initial;
 if (params.get("q")) q.value = params.get("q")!;
 
+muni.addEventListener("change", () => {
+  const url = new URL(location.href);
+  url.searchParams.set("m", muni.value);
+  url.searchParams.delete("cp");
+  history.replaceState(null, "", url);
+  q.value = "";
+  void load(muni.value);
+});
 [q, group, cp, companies].forEach((el) => el.addEventListener("input", render));
-render();
+await load(initial, params.get("cp") ?? "");
 
 // Módulo ES: evita que TypeScript comparta el ámbito global entre scripts.
 export {};

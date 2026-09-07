@@ -1,20 +1,28 @@
 ---
 import Base from "../layouts/Base.astro";
-import stats from "../data/stats.json";
+import municipios from "../data/municipios.json";
 
-const postalCodes = Object.entries(stats.by_postal_code).filter(([cp]) => /^11\d{3}$/.test(cp)).sort();
+const DEFAULT = "cadiz";
+const inicial = municipios.municipios.find((m) => m.slug === DEFAULT) ?? municipios.municipios[0];
+const fmt = (n: number) => n.toLocaleString("es-ES");
 ---
 
-<Base title="Mapa de viviendas turísticas de Cádiz" fullBleed>
+<Base title="Mapa de viviendas turísticas de la provincia de Cádiz" fullBleed>
   <div class="grid min-h-[560px] grid-rows-[auto_1fr] lg:h-[calc(100vh-108px)] lg:grid-cols-[360px_1fr] lg:grid-rows-1">
     <aside class="overflow-y-auto border-b border-neutral-200 bg-white p-4 lg:border-b-0 lg:border-r">
-      <h1 class="display text-3xl">Viviendas turísticas en Cádiz</h1>
+      <h1 class="display text-3xl">Viviendas turísticas en <span id="muni-name">{inicial.name}</span></h1>
       <p class="mt-2 text-sm text-neutral-600">
-        <strong>{stats.total.toLocaleString("es-ES")}</strong> alojamientos turísticos registrados y <strong>{stats.places.toLocaleString("es-ES")}</strong> plazas
-        en una ciudad que pierde vecinas. Datos oficiales de la Junta, actualizados el {stats.source_updated_at}.
+        <strong id="muni-stats">{fmt(inicial.total)} alojamientos turísticos registrados y {fmt(inicial.places)} plazas</strong>.
+        Datos oficiales de la Junta para los {municipios.municipios.length} municipios de la provincia, actualizados el {municipios.source_updated_at}.
       </p>
 
       <form id="filters" class="mt-4 space-y-3 text-sm" onsubmit="return false">
+        <label class="block">
+          <span class="font-medium">Municipio</span>
+          <select id="muni" class="mt-1 w-full rounded-md border border-neutral-300 px-2 py-2">
+            {municipios.municipios.map((m) => <option value={m.slug} selected={m.slug === inicial.slug}>{`${m.name} (${fmt(m.total)})`}</option>)}
+          </select>
+        </label>
         <label class="block">
           <span class="font-medium">¿Hay licencia turística en tu calle?</span>
           <input id="q" type="search" placeholder="Escribe la calle: Sopranis, Plocia…" autocomplete="off"
@@ -31,7 +39,6 @@ const postalCodes = Object.entries(stats.by_postal_code).filter(([cp]) => /^11\d
           <label class="block"><span class="text-xs text-neutral-600">Código postal</span>
             <select id="cp" class="mt-1 w-full rounded-md border border-neutral-300 px-2 py-2">
               <option value="">Todos</option>
-              {postalCodes.map(([cp, n]) => <option value={cp}>{`${cp} (${n})`}</option>)}
             </select>
           </label>
         </div>
