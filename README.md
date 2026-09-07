@@ -38,6 +38,7 @@ npm run build
 - **Datos**: `update-data.yml` corre el día 1 de cada mes a las 05:17 UTC; también a mano en Actions → "Actualizar datos" → Run workflow. Si OpenRTA cambia el formato, el script falla y no hay commit: los datos anteriores siguen publicados.
 - **Enlaces desde la web**: menú Herramientas de inquilinatocadiz.org (Mapa, Datos, Utilidades, Denunciar). La sección se llamó `/herramientas/` en la primera versión; hay redirecciones.
 - **Índices para la calculadora de renta**: `src/data/indices.json`, a mano. El IRAV lo publica el INE mensualmente y la calculadora siempre permite escribirlo.
+- **Estadísticas**: Umami en `estadisticas.inquilinatocadiz.org` (servidor de Sindicadas, ver `sindicadas/docs/OPERACIONES.md`). El script va en `src/layouts/Base.astro`; sin cookies ni datos personales.
 
 ## Origen
 
