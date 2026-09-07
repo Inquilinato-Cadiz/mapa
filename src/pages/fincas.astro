@@ -1,0 +1,63 @@
+---
+import Base from "../layouts/Base.astro";
+import fincas from "../data/fincas.json";
+
+const fmt = (n: number) => n.toLocaleString("es-ES");
+const postalCodes = Object.entries(fincas.by_postal_code).filter(([cp]) => /^11\d{3}$/.test(cp)).sort();
+const thresholds = ["5", "10", "20", "50"] as const;
+const description = `${fmt(fincas.homes)} viviendas de Cádiz están en ${fmt(fincas.total)} fincas que pertenecen enteras a un único propietario. Comprueba si la tuya es una de ellas y organízate con tus vecinas.`;
+---
+
+<Base title="Fincas enteras de un único propietario en Cádiz" description={description} fullBleed>
+  <div class="grid min-h-[560px] grid-rows-[auto_1fr] lg:h-[calc(100vh-108px)] lg:grid-cols-[360px_1fr] lg:grid-rows-1">
+    <aside class="overflow-y-auto border-b border-neutral-200 bg-white p-4 lg:border-b-0 lg:border-r">
+      <h1 class="display text-3xl">Organízate con tus vecinas</h1>
+      <p class="mt-2 text-sm text-neutral-600">
+        Cádiz es un paraíso para rentistas e inversores: <strong>{fmt(fincas.homes)} viviendas</strong> de la ciudad están en <strong>{fmt(fincas.total)} fincas</strong> que pertenecen enteras a un único propietario. Si vives en una de estas direcciones, todo tu edificio es del mismo dueño.
+      </p>
+      <p class="mt-2 text-sm text-neutral-600">
+        Eso significa más probabilidades de que os suban el alquiler a todas a la vez, de que os echen en cadena o de que conviertan el edificio en pisos turísticos.
+        Contacta con el sindicato y organízate desde ya para impedirlo.
+      </p>
+      <a href="https://inquilinatocadiz.org/participa/" class="mt-3 inline-block rounded-md bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark">Contacta con el sindicato</a>
+
+      <form id="filters" class="mt-5 space-y-3 text-sm" onsubmit="return false">
+        <label class="block">
+          <span class="font-medium">¿Está tu finca en la lista?</span>
+          <input id="q" type="search" placeholder="Escribe la calle: Barbate, Sopranis…" autocomplete="off"
+            class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-brand" />
+        </label>
+        <div class="grid grid-cols-2 gap-3">
+          <label class="block"><span class="text-xs text-neutral-600">Viviendas por finca</span>
+            <select id="min" class="mt-1 w-full rounded-md border border-neutral-300 px-2 py-2">
+              {thresholds.map((t) => <option value={t}>{`${t} o más (${fmt(fincas.thresholds[t])})`}</option>)}
+            </select>
+          </label>
+          <label class="block"><span class="text-xs text-neutral-600">Código postal</span>
+            <select id="cp" class="mt-1 w-full rounded-md border border-neutral-300 px-2 py-2">
+              <option value="">Todos</option>
+              {postalCodes.map(([cp, n]) => <option value={cp}>{`${cp} (${n.fincas})`}</option>)}
+            </select>
+          </label>
+        </div>
+        <p id="count" class="text-neutral-600" aria-live="polite">Cargando…</p>
+      </form>
+
+      <ul id="results" class="mt-4 hidden divide-y divide-neutral-100 rounded-md border border-neutral-200 text-sm"></ul>
+
+      <div class="mt-4 rounded-md border border-neutral-200 bg-neutral-50 p-3 text-xs text-neutral-600">
+        <p class="font-medium text-neutral-800">Cómo leerlo</p>
+        <ul class="mt-1 list-disc space-y-1 pl-4">
+          <li>Cada círculo es una finca que el Catastro registra como una única propiedad, sin división horizontal, con {fincas.min_homes} viviendas o más. Cuanto más grande el círculo, más viviendas.</li>
+          <li>El Catastro no publica quién es el propietario: puede ser un fondo, una empresa, una persona o una administración pública. Entre estas fincas puede haber promociones de vivienda pública.</li>
+          <li>Si vives en una de ellas y quieres organizarte con tus vecinas, <a href="https://inquilinatocadiz.org/participa/" class="underline">escríbenos</a>.</li>
+        </ul>
+        <p class="mt-2">Fuente: {fincas.source}. Datos preparados por el sindicato el {fincas.generated_at}.</p>
+      </div>
+    </aside>
+
+    <div id="map" class="order-first min-h-[60vh] bg-neutral-100 lg:order-none lg:min-h-0" role="region" aria-label="Mapa de fincas de un único propietario"></div>
+  </div>
+</Base>
+
+<script src="../scripts/fincas.ts"></script>

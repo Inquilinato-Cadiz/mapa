@@ -11,6 +11,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "data": "node scripts/fetch-openrta.mjs",
+    "fincas": "node scripts/build-fincas.mjs",
     "check": "astro check"
   },
   "dependencies": {

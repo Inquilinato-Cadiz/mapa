@@ -5,6 +5,7 @@ Sitio estático del Sindicato de Inquilinas e Inquilinos de Cádiz en `mapa.inqu
 ## Qué hay
 
 - `/` Mapa de viviendas de uso turístico y apartamentos turísticos de los 45 municipios de la provincia de Cádiz: selector de municipio, buscador por calle y filtros por tipo, código postal y titular empresa. `/?m=tarifa` abre un municipio; `&cp=11380` filtra un código postal.
+- `/fincas/` Mapa de las fincas de la ciudad de Cádiz que pertenecen enteras a un único propietario (sin división horizontal) con 5 o más viviendas, con buscador por calle y filtros por tamaño y código postal. Llamada a organizarse con las vecinas.
 - `/datos/` Cifras de la provincia y ranking por municipio; `/datos/<municipio>/` para cada uno: totales, plazas, por código postal, altas por año y empresas con más alojamientos.
 - `/denuncia/` Cómo denunciar una vivienda turística ilegal.
 - `/utilidades/` Calculadora de actualización de renta (IRAV/IPC), calculadora de plazos LAU, comprobador de cláusulas del contrato y guía del precio de referencia.
@@ -18,6 +19,12 @@ Fuente: [OpenRTA](https://www.juntadeandalucia.es/datosabiertos/portal/dataset/o
 Sobre los titulares: la Junta publica el nombre sólo cuando es una empresa; las personas físicas llegan anonimizadas y así se quedan. No se guarda ni se publica ningún dato de contacto.
 
 El workflow `update-data.yml` regenera los datos el día 1 de cada mes y hace commit si hay cambios; `deploy.yml` construye y publica en GitHub Pages con cada push a `main`.
+
+### Fincas de un único propietario
+
+Fuente: Dirección General del Catastro, extraído y filtrado por el grupo de datos del sindicato (fincas sin división horizontal con 5 o más viviendas en la ciudad de Cádiz). No hay API: el dato llega en un Excel.
+
+`data/fincas-cadiz.csv` es ese Excel exportado a CSV UTF-8 con estas columnas: `referencia_catastral, calle, numero, codigo_postal, lat, lon, superficie_construida_m2, anyo_construccion, viviendas`. `npm run fincas` ejecuta `scripts/build-fincas.mjs`, que escribe `public/data/fincas-cadiz.geojson` (lo carga el mapa) y `src/data/fincas.json` (cifras para la página). Para quitar una finca (por ejemplo, una promoción de vivienda pública) basta borrar su fila del CSV y volver a ejecutar. El Catastro no dice quién es el propietario, sólo que es uno.
 
 `src/data/indices.json` guarda los últimos valores conocidos de IPC e IRAV para la calculadora de renta. La calculadora siempre permite escribir el valor a mano y enlaza al INE.
 
