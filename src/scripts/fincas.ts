@@ -41,7 +41,7 @@ const popup = (p: Props) => {
   return `<p class="font-semibold">${esc(p.address)}${p.postal_code ? ` <span class="font-normal text-neutral-500">${esc(p.postal_code)}</span>` : ""}</p>
     <p class="mt-1 text-xs text-neutral-600">Finca entera de un único propietario.</p>
     <dl class="mt-2 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">${rows.map(([k, v]) => `<dt class="text-neutral-500">${k}</dt><dd>${v}</dd>`).join("")}</dl>
-    <p class="mt-3"><a class="inline-block rounded-md bg-brand px-3 py-1.5 text-xs font-semibold text-white hover:bg-brand-dark" href="https://inquilinatocadiz.org/participa/">¿Vives aquí? Organízate con el sindicato</a></p>`;
+    <p class="mt-3"><a class="inline-block rounded-md bg-brand px-3 py-1.5 text-xs font-semibold text-white hover:bg-brand-dark" href="https://sindicadas.inquilinatocadiz.org/contacto?motivo=building">¿Vives aquí? Organízate con el sindicato</a></p>`;
 };
 
 // El tamaño del círculo crece con la raíz del número de viviendas: 5 → 6 px, 50 → 12 px, 380 → 25 px.
