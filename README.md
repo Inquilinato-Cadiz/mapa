@@ -18,7 +18,7 @@ Fuente: [OpenRTA](https://www.juntadeandalucia.es/datosabiertos/portal/dataset/o
 
 Sobre los titulares: la Junta publica el nombre sólo cuando es una empresa; las personas físicas llegan anonimizadas y así se quedan. No se guarda ni se publica ningún dato de contacto.
 
-El workflow `update-data.yml` regenera los datos el día 1 de cada mes y hace commit si hay cambios; `deploy.yml` construye y publica en GitHub Pages con cada push a `main`.
+El workflow `update-data.yml` regenera los datos y los índices el día 1 de cada mes y hace commit si hay cambios; `deploy.yml` construye y publica en GitHub Pages con cada push a `main`.
 
 ### Fincas de un único propietario
 
@@ -26,7 +26,7 @@ Fuente: Dirección General del Catastro, extraído y filtrado por el grupo de da
 
 `data/fincas-cadiz.csv` es ese Excel exportado a CSV UTF-8 con estas columnas: `referencia_catastral, calle, numero, codigo_postal, lat, lon, superficie_construida_m2, anyo_construccion, viviendas`. `npm run fincas` ejecuta `scripts/build-fincas.mjs`, que escribe `public/data/fincas-cadiz.geojson` (lo carga el mapa) y `src/data/fincas.json` (cifras para la página). Para quitar una finca (por ejemplo, una promoción de vivienda pública) basta borrar su fila del CSV y volver a ejecutar. El Catastro no dice quién es el propietario, sólo que es uno.
 
-`src/data/indices.json` guarda los últimos valores conocidos de IPC e IRAV para la calculadora de renta. La calculadora siempre permite escribir el valor a mano y enlaza al INE.
+`src/data/indices.json` guarda los valores mensuales de IPC e IRAV para la calculadora de renta. `npm run indices` ejecuta `scripts/fetch-indices.mjs`, que los descarga de la API del INE (series IPC290750 e IRAV1). La calculadora siempre permite escribir el valor a mano y enlaza al INE.
 
 ## Desarrollo
 
@@ -44,7 +44,7 @@ npm run build
 - **Dominio**: `mapa.inquilinatocadiz.org` con `CNAME → inquilinato-cadiz.github.io` en Cloudflare (DNS only) y `public/CNAME`. Certificado de GitHub emitido y HTTPS forzado (Settings → Pages). Si el certificado se atasca, quitar y volver a poner el dominio en Settings → Pages.
 - **Datos**: `update-data.yml` corre el día 1 de cada mes a las 05:17 UTC; también a mano en Actions → "Actualizar datos" → Run workflow. Si OpenRTA cambia el formato, el script falla y no hay commit: los datos anteriores siguen publicados.
 - **Enlaces desde la web**: menú Herramientas de inquilinatocadiz.org (Mapa, Datos, Utilidades, Denunciar). La sección se llamó `/herramientas/` en la primera versión; hay redirecciones.
-- **Índices para la calculadora de renta**: `src/data/indices.json`, a mano. El IRAV lo publica el INE mensualmente y la calculadora siempre permite escribirlo.
+- **Índices para la calculadora de renta**: `src/data/indices.json`, regenerado por `update-data.yml` con `npm run indices`. El INE publica el IRAV y el IPC a mediados de mes, así que el día 1 se recoge el del mes anterior; la calculadora siempre permite escribir el valor a mano.
 - **Estadísticas**: Umami en `estadisticas.inquilinatocadiz.org` (servidor de Sindicadas, ver `sindicadas/docs/OPERACIONES.md`). El script va en `src/layouts/Base.astro`; sin cookies ni datos personales.
 - **Sin terceros**: la fuente Anton (`@fontsource/anton`) y Font Awesome (`@fortawesome/fontawesome-free`) se sirven desde el propio sitio, importados en `src/styles/global.css`. Ninguna visita carga nada de Google ni de un CDN.
 
