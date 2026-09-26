@@ -1,0 +1,43 @@
+---
+/**
+ * Vídeo de YouTube que no carga nada de Google hasta que se pulsa.
+ * La carátula se sirve desde este sitio; al pulsar se incrusta desde youtube-nocookie.com.
+ */
+interface Props {
+  id: string;
+  title: string;
+  poster: string;
+  credit?: string;
+}
+const { id, title, poster, credit } = Astro.props;
+---
+
+<figure class="video brut bg-ink" data-id={id}>
+  <button type="button" class="group relative block aspect-video w-full cursor-pointer overflow-hidden text-left" aria-label={`Reproducir: ${title}`}>
+    <img src={poster} alt="" width="960" height="540" loading="lazy" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]" />
+    <span class="absolute inset-0 flex items-center justify-center">
+      <span class="display flex items-center gap-3 border-3 border-ink bg-brand px-5 py-3 text-2xl text-white shadow-[6px_6px_0_#171717] group-hover:bg-brand-dark">
+        <i class="fa-solid fa-play" aria-hidden="true"></i> Ver vídeo
+      </span>
+    </span>
+  </button>
+  <figcaption class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-t-3 border-ink bg-white px-4 py-2 font-mono text-xs">
+    <span class="font-semibold">{title}</span>
+    {credit && <span class="text-neutral-600">{credit}</span>}
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll<HTMLElement>(".video").forEach((fig) => {
+    const button = fig.querySelector("button");
+    button?.addEventListener("click", () => {
+      const iframe = document.createElement("iframe");
+      iframe.className = "aspect-video w-full";
+      iframe.src = `https://www.youtube-nocookie.com/embed/${fig.dataset.id}?autoplay=1&rel=0`;
+      iframe.title = button.getAttribute("aria-label") ?? "Vídeo";
+      iframe.allow = "autoplay; encrypted-media; picture-in-picture";
+      iframe.allowFullscreen = true;
+      button.replaceWith(iframe);
+    });
+  });
+</script>

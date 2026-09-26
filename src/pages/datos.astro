@@ -40,7 +40,7 @@ const companiesTotal = p.companies.reduce((s, c) => s + c.count, 0);
             <td class="py-1.5">{fmt(m.total)}</td>
             <td class="py-1.5">{fmt(m.places)}</td>
             <td class="py-1.5"><div class="h-3 rounded bg-brand" style={`width: ${Math.round((m.total / maxMuni) * 100)}%`}></div></td>
-            <td class="py-1.5 text-right"><a href={`/?m=${m.slug}`} class="text-xs underline">mapa</a></td>
+            <td class="py-1.5 text-right"><a href={`/mapa/?m=${m.slug}`} class="text-xs underline">mapa</a></td>
           </tr>
         ))}
       </tbody>

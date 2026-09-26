@@ -1,0 +1,26 @@
+---
+import Base from "../layouts/Base.astro";
+import Agenda from "../components/Agenda.astro";
+
+const ICS = "https://sindicadas.inquilinatocadiz.org/agenda.ics";
+---
+
+<Base title="Agenda" description="Asambleas, acciones y talleres abiertos del Sindicato de Inquilinas e Inquilinos de Cádiz.">
+  <div class="flex flex-wrap items-end justify-between gap-6">
+    <div>
+      <h1 class="display text-6xl md:text-7xl">Agenda</h1>
+      <p class="mt-4 max-w-2xl text-lg leading-relaxed md:text-xl">Asambleas, acciones y talleres abiertos. No hace falta ser afiliada ni pedir cita: ven.</p>
+    </div>
+    <a href={ICS.replace("https://", "webcal://")} class="brut brut-hover display inline-flex items-center gap-2 bg-white px-5 py-3 text-xl" title="Suscribirse en tu calendario">
+      <i class="fa-solid fa-calendar-plus" aria-hidden="true"></i> Suscribirse
+    </a>
+  </div>
+
+  <div class="mt-10 max-w-3xl">
+    <Agenda full />
+  </div>
+
+  <p class="mt-10 max-w-3xl font-mono text-xs leading-relaxed text-neutral-600">
+    «Suscribirse» añade la agenda a tu calendario (iPhone, Android, Google Calendar, Thunderbird…) y se actualiza sola. Si tu app no abre el enlace, copia esta dirección: <span class="select-all">{ICS}</span>
+  </p>
+</Base>

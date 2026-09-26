@@ -4,9 +4,10 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://mapa.inquilinatocadiz.org",
+  site: "https://inquilinatocadiz.org",
   // La sección se llamó "herramientas" en la primera versión.
   redirects: {
+    "/afiliate/": "/unete/",
     "/herramientas/": "/utilidades/",
     "/herramientas/renta/": "/utilidades/renta/",
     "/herramientas/plazos/": "/utilidades/plazos/",

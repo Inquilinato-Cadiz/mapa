@@ -1,0 +1,19 @@
+---
+/**
+ * Lista de próximas convocatorias públicas, cargada en el navegador desde Sindicadas.
+ * limit: cuántas enseñar · full: con descripción · hideEmpty: quita la sección entera si no hay ninguna.
+ */
+interface Props {
+  limit?: number;
+  full?: boolean;
+  hideEmpty?: boolean;
+}
+const { limit, full = false, hideEmpty = false } = Astro.props;
+---
+
+<div data-agenda data-limit={limit} data-full={String(full)} data-hide-empty={String(hideEmpty)}>
+  <ul data-agenda-list class="space-y-5"></ul>
+  <p data-agenda-status class="font-mono text-sm opacity-80">Cargando la agenda…</p>
+</div>
+
+<script src="../scripts/agenda.ts"></script>
