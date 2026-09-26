@@ -1,5 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
+import Cifras from "../../components/Cifras.astro";
 import stats from "../../data/stats.json";
 import vacias from "../../data/vacias.json";
 import demanda from "../../data/demanda.json";
@@ -24,139 +25,188 @@ export function getStaticPaths() {
 const { municipio } = Astro.params;
 const s = (stats.municipios as Record<string, MunicipioStats>)[municipio!];
 const fmt = (n: number) => n.toLocaleString("es-ES");
+const dec = (n: number, d = 1) => n.toLocaleString("es-ES", { maximumFractionDigits: d });
+const pct = (n: number, d: number) => `${dec((n / d) * 100)} %`;
+
+// 1. Turísticas
 const byCp = Object.entries(s.by_postal_code).filter(([cp]) => /^11\d{3}$/.test(cp)).sort((a, b) => b[1] - a[1]);
 const years = Object.entries(s.by_year).filter(([y]) => Number(y) >= 2010);
 const maxYear = Math.max(1, ...years.map(([, n]) => n));
 const companiesTotal = s.companies.reduce((sum, c) => sum + c.count, 0);
+
+// 2. Vacías
 type Vacias = { total: number; empty: number; low: number; sporadic: number; median_kwh: number };
 const v = (vacias.municipios as Record<string, Vacias | undefined>)[municipio!];
+
+// 3. Demanda de VPO
 type Demanda = { solicitudes: number; inscritas: number; activas: number; adjudicadas: number; caducadas: number };
 const d = (demanda.municipios as Record<string, Demanda | undefined>)[municipio!];
 const periodo = new Date(`${demanda.period}-01`).toLocaleDateString("es-ES", { month: "long", year: "numeric" });
-const pct = (n: number, d: number) => `${((n / d) * 100).toLocaleString("es-ES", { maximumFractionDigits: 1 })} %`;
+
+// 4. Lecturas
+const por100 = v ? (s.total / v.total) * 100 : null;
+const por100Prov = (stats.province.total / (vacias.province as Vacias).total) * 100;
+const sinUso = v ? v.empty + s.total : null;
+
+const indice = [
+  ["#turisticas", "01", "Viviendas turísticas"],
+  ["#vacias", "02", "Viviendas vacías"],
+  ["#vpo", "03", "Demanda de vivienda protegida"],
+  ["#lecturas", "04", "Lecturas cruzadas"],
+];
 ---
 
-<Base title={`Datos de la turistificación en ${s.name}`}>
+<Base title={`Datos de vivienda en ${s.name}`} description={`Viviendas turísticas, vacías y demanda de vivienda protegida en ${s.name}, con fuentes oficiales.`}>
   <p class="text-sm text-neutral-500"><a href="/datos/" class="hover:underline">Provincia de Cádiz</a> / {s.name}</p>
-  <h1 class="display text-4xl">{s.name} en cifras</h1>
-  <p class="mt-2 max-w-2xl text-neutral-600">Lo que dice el Registro de Turismo de Andalucía sobre {s.name}. Fuente oficial, actualizada el {stats.source_updated_at}. Sólo se cuentan viviendas de uso turístico y apartamentos turísticos con coordenadas válidas. <a href={`/mapa/?m=${municipio}`} class="underline">Ver en el mapa</a>.</p>
+  <h1 class="display text-5xl md:text-6xl">{s.name} en cifras</h1>
+  <p class="mt-4 max-w-2xl text-lg leading-relaxed">Tres fuentes oficiales, cada una en su bloque, y lo que sale al cruzarlas. Los desahucios sólo se publican por provincia: están en <a href="/datos/#desahucios" class="underline decoration-2 underline-offset-4">la página de la provincia</a>.</p>
+  <nav aria-label="Bloques de esta página" class="mt-6 flex flex-wrap gap-2">
+    {indice.map(([href, num, label]) => (
+      <a href={href} class="inline-flex items-baseline gap-2 border-2 border-neutral-900 bg-white px-3 py-1.5 text-sm hover:bg-neutral-900 hover:text-white">
+        <span class="font-mono text-xs text-brand">{num}</span> <span class="font-medium">{label}</span>
+      </a>
+    ))}
+  </nav>
 
-  <dl class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-    {[
+  <!-- 01 · Turísticas -->
+  <section id="turisticas" class="mt-14 scroll-mt-6 border-t-3 border-neutral-900 pt-6">
+    <p class="font-mono text-xs uppercase tracking-widest text-neutral-600">01 · Registro de Turismo de Andalucía · {stats.source_updated_at} · se regenera cada mes</p>
+    <h2 class="display mt-1 text-4xl">Viviendas turísticas</h2>
+    <p class="mt-3 max-w-2xl leading-relaxed">Viviendas de uso turístico y apartamentos turísticos inscritos en el registro de la Junta en {s.name}, con coordenadas válidas. <a href={`/mapa/?m=${municipio}`} class="underline decoration-2 underline-offset-4">Ver en el mapa</a>.</p>
+    <Cifras items={[
       ["Alojamientos turísticos", fmt(s.total)],
       ["Plazas", fmt(s.places)],
       ["Por habitaciones", fmt(s.by_group["Por habitaciones"] ?? 0)],
-      ["De empresas (identificadas)", fmt(s.total - s.individuals_count)],
-    ].map(([label, value]) => (
-      <div class="rounded-lg border border-neutral-200 bg-white p-5">
-        <dt class="text-sm text-neutral-600">{label}</dt>
-        <dd class="display mt-1 text-5xl text-brand">{value}</dd>
-      </div>
-    ))}
-  </dl>
+      ["De empresas identificadas", fmt(s.total - s.individuals_count), `${fmt(s.individuals_count)} de particulares`],
+    ]} />
 
-  <section class="mt-10">
-    <h2 class="display text-2xl">Viviendas vacías</h2>
+    {s.total === 0 ? (
+      <p class="mt-6 rounded-md border border-neutral-200 bg-neutral-50 p-4 text-sm text-neutral-700">El registro no tiene viviendas de uso turístico ni apartamentos turísticos en {s.name}. Puede haber otros alojamientos (hoteles, casas rurales) que este mapa no cuenta.</p>
+    ) : (
+      <>
+        <div class="mt-10 grid gap-8 lg:grid-cols-2">
+          <div>
+            <h3 class="display text-2xl">Por código postal</h3>
+            <table class="mt-3 w-full text-sm">
+              <thead class="text-left text-xs uppercase text-neutral-500"><tr><th class="py-1">CP</th><th class="py-1">Alojamientos</th><th class="w-1/2 py-1"></th></tr></thead>
+              <tbody class="divide-y divide-neutral-100">
+                {byCp.map(([cp, n]) => (
+                  <tr>
+                    <td class="py-1.5 font-medium"><a href={`/mapa/?m=${municipio}&cp=${cp}`} class="hover:underline">{cp}</a></td>
+                    <td class="py-1.5">{fmt(n)}</td>
+                    <td class="py-1.5"><div class="h-3 rounded bg-brand" style={`width: ${Math.round((n / byCp[0][1]) * 100)}%`}></div></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h3 class="display text-2xl">Altas por año</h3>
+            <p class="mt-1 text-sm text-neutral-600">Año de inscripción en el registro. Las bajas no aparecen: el registro sólo publica lo que sigue activo.</p>
+            <ul class="mt-3 space-y-1.5 text-sm">
+              {years.map(([year, n]) => (
+                <li class="grid grid-cols-[3.5rem_1fr_3rem] items-center gap-2">
+                  <span class="font-medium">{year}</span>
+                  <div class="h-4 rounded bg-neutral-200"><div class="h-4 rounded bg-brand" style={`width: ${Math.round((n / maxYear) * 100)}%`}></div></div>
+                  <span class="text-right text-neutral-600">{fmt(n)}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="display mt-10 text-2xl">Empresas con más alojamientos</h3>
+        {s.companies.length > 0 ? (
+          <>
+            <p class="mt-1 max-w-2xl text-sm text-neutral-600">El registro sólo publica el nombre del titular cuando es una empresa. {fmt(s.individuals_count)} alojamientos son de particulares y no se puede saber cuántos tiene cada uno. Las {s.companies.length} empresas de esta lista suman {fmt(companiesTotal)}.</p>
+            <ol class="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+              {s.companies.map((c, i) => (
+                <li class="flex items-baseline justify-between gap-3 rounded-md border border-neutral-200 bg-white px-4 py-2 text-sm">
+                  <span><span class="text-neutral-400">{i + 1}.</span> {c.name}</span>
+                  <strong class="text-brand">{c.count}</strong>
+                </li>
+              ))}
+            </ol>
+          </>
+        ) : (
+          <p class="mt-1 text-sm text-neutral-600">Ninguna empresa identificada: todos los titulares de {s.name} son particulares.</p>
+        )}
+      </>
+    )}
+    <p class="mt-6 text-xs text-neutral-500">Fuente: <a href="https://www.juntadeandalucia.es/datosabiertos/portal/dataset/openrta" rel="noopener" class="underline">OpenRTA, Registro de Turismo de Andalucía</a> (CC BY 4.0). Generado el {stats.generated_at}; {s.skipped_without_valid_coordinates} registros descartados por coordenadas ausentes, fuera de la provincia o a más de 30 km del municipio.</p>
+  </section>
+
+  <!-- 02 · Vacías -->
+  <section id="vacias" class="mt-14 scroll-mt-6 border-t-3 border-neutral-900 pt-6">
+    <p class="font-mono text-xs uppercase tracking-widest text-neutral-600">02 · INE, Censo 2021 · foto a 1 de enero de 2021</p>
+    <h2 class="display mt-1 text-4xl">Viviendas vacías</h2>
     {v ? (
       <>
-        <p class="mt-1 max-w-2xl text-sm text-neutral-600">El INE cuenta en {s.name} <strong>{fmt(v.empty)} viviendas vacías</strong> ({pct(v.empty, v.total)} de {fmt(v.total)}): sin contrato de luz o con menos consumo que 15 días de uso al año. {s.total > 0 && `Frente a ${fmt(s.total)} alojamientos turísticos.`}</p>
-        <dl class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            ["Viviendas", fmt(v.total)],
-            ["Vacías", fmt(v.empty)],
-            ["Con bajo consumo (hasta 250 kWh)", fmt(v.low)],
-            ["De uso esporádico (251 a 750 kWh)", fmt(v.sporadic)],
-          ].map(([label, value]) => (
-            <div class="rounded-lg border border-neutral-200 bg-white p-5">
-              <dt class="text-sm text-neutral-600">{label}</dt>
-              <dd class="display mt-1 text-4xl text-brand">{value}</dd>
-            </div>
-          ))}
-        </dl>
-        <p class="mt-3 text-xs text-neutral-500">Fuente: <a href={vacias.source_url} rel="noopener" class="underline">{vacias.source}</a>. Foto a 1 de enero de 2021. Estimación por consumo eléctrico: mezcla pisos cerrados, en venta o en obras; en «uso esporádico» hay sobre todo segundas residencias.</p>
+        <p class="mt-3 max-w-2xl leading-relaxed">El INE clasifica cada vivienda por su consumo de luz anual. «Vacía» es la que no tiene contrato o consume menos que si se usara 15 días al año. En {s.name} son <strong>{fmt(v.empty)}</strong>, el {pct(v.empty, v.total)} de las {fmt(v.total)} viviendas.</p>
+        <Cifras items={[
+          ["Viviendas", fmt(v.total)],
+          ["Vacías", fmt(v.empty), pct(v.empty, v.total)],
+          ["Con bajo consumo", fmt(v.low), "hasta 250 kWh al año"],
+          ["De uso esporádico", fmt(v.sporadic), "entre 251 y 750 kWh: sobre todo segundas residencias"],
+        ]} />
+        <p class="mt-6 text-xs text-neutral-500">Fuente: <a href={vacias.source_url} rel="noopener" class="underline">{vacias.source}</a>. Estimación por consumo eléctrico: mezcla pisos cerrados, en venta o en obras.</p>
       </>
     ) : (
-      <p class="mt-1 max-w-2xl text-sm text-neutral-600">El INE no publica el dato de {s.name}: lo agrupa con otros municipios pequeños de la provincia. <a href="/datos/" class="underline">Ver la provincia</a>.</p>
+      <p class="mt-3 max-w-2xl leading-relaxed">El INE no publica el dato de {s.name}: lo agrupa con otros municipios pequeños de la provincia. <a href="/datos/#vacias" class="underline decoration-2 underline-offset-4">Ver la provincia</a>.</p>
     )}
   </section>
 
-  <section class="mt-10">
-    <h2 class="display text-2xl">Demanda de vivienda protegida</h2>
+  <!-- 03 · Demanda de VPO -->
+  <section id="vpo" class="mt-14 scroll-mt-6 border-t-3 border-neutral-900 pt-6">
+    <p class="font-mono text-xs uppercase tracking-widest text-neutral-600">03 · Junta de Andalucía, registro de demandantes · {periodo} · se regenera cada mes</p>
+    <h2 class="display mt-1 text-4xl">Demanda de vivienda protegida</h2>
     {d ? (
       <>
-        <p class="mt-1 max-w-2xl text-sm text-neutral-600">En el registro municipal de demandantes hay <strong>{fmt(d.activas)} familias inscritas</strong> esperando una vivienda protegida en {s.name}. Desde 2009 se han presentado {fmt(d.solicitudes)} solicitudes y se han adjudicado {fmt(d.adjudicadas)}. Datos de {periodo}.</p>
-        <dl class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            ["Familias inscritas (activas)", fmt(d.activas)],
-            ["Adjudicaciones desde 2009", fmt(d.adjudicadas)],
-            ["Solicitudes desde 2009", fmt(d.solicitudes)],
-            ["Inscripciones caducadas", fmt(d.caducadas)],
-          ].map(([label, value]) => (
-            <div class="rounded-lg border border-neutral-200 bg-white p-5">
-              <dt class="text-sm text-neutral-600">{label}</dt>
-              <dd class="display mt-1 text-4xl text-brand">{value}</dd>
-            </div>
-          ))}
-        </dl>
-        <p class="mt-3 text-xs text-neutral-500">Fuente: <a href={demanda.source_url} rel="noopener" class="underline">{demanda.source}</a>, {periodo}. Una inscripción es una unidad familiar. Se regenera cada mes.</p>
+        <p class="mt-3 max-w-2xl leading-relaxed">Quien quiere una vivienda protegida se inscribe en el registro de demandantes del ayuntamiento. Una inscripción es una unidad familiar. En {s.name} hay <strong>{fmt(d.activas)} familias inscritas</strong> esperando; desde 2009 se han adjudicado {fmt(d.adjudicadas)}: {dec((d.adjudicadas / d.inscritas) * 100)} de cada 100 inscripciones.</p>
+        <Cifras items={[
+          ["Familias inscritas (activas)", fmt(d.activas)],
+          ["Adjudicaciones desde 2009", fmt(d.adjudicadas), `${dec((d.adjudicadas / d.inscritas) * 100)} por cada 100 inscripciones`],
+          ["Solicitudes desde 2009", fmt(d.solicitudes)],
+          ["Inscripciones caducadas", fmt(d.caducadas), "hay que renovarlas cada tres años"],
+        ]} />
+        <p class="mt-6 text-xs text-neutral-500">Fuente: <a href={demanda.source_url} rel="noopener" class="underline">{demanda.source}</a>, {periodo}.</p>
       </>
     ) : (
-      <p class="mt-1 max-w-2xl text-sm text-neutral-600">No hay dato de {s.name}: lleva registro propio fuera de la herramienta común de la Junta o no tiene inscripciones. <a href="/datos/" class="underline">Ver la provincia</a>.</p>
+      <p class="mt-3 max-w-2xl leading-relaxed">No hay dato de {s.name}: lleva registro propio fuera de la herramienta común de la Junta o no tiene inscripciones. <a href="/datos/#vpo" class="underline decoration-2 underline-offset-4">Ver la provincia</a>.</p>
     )}
   </section>
 
-  {s.total === 0 && <p class="mt-8 rounded-md border border-neutral-200 bg-neutral-50 p-4 text-sm text-neutral-700">El registro no tiene viviendas de uso turístico ni apartamentos turísticos en {s.name}. Puede haber otros alojamientos (hoteles, casas rurales) que este mapa no cuenta.</p>}
-
-  <div class="mt-10 grid gap-8 lg:grid-cols-2">
-    <section>
-      <h2 class="display text-2xl">Por código postal</h2>
-      <table class="mt-3 w-full text-sm">
-        <thead class="text-left text-xs uppercase text-neutral-500"><tr><th class="py-1">CP</th><th class="py-1">Alojamientos</th><th class="w-1/2 py-1"></th></tr></thead>
-        <tbody class="divide-y divide-neutral-100">
-          {byCp.map(([cp, n]) => (
-            <tr>
-              <td class="py-1.5 font-medium"><a href={`/mapa/?m=${municipio}&cp=${cp}`} class="hover:underline">{cp}</a></td>
-              <td class="py-1.5">{fmt(n)}</td>
-              <td class="py-1.5"><div class="h-3 rounded bg-brand" style={`width: ${Math.round((n / byCp[0][1]) * 100)}%`}></div></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </section>
-
-    <section>
-      <h2 class="display text-2xl">Altas por año</h2>
-      <p class="mt-1 text-sm text-neutral-600">Año de inscripción en el registro. Las bajas no aparecen: el registro sólo publica lo que sigue activo.</p>
-      <ul class="mt-3 space-y-1.5 text-sm">
-        {years.map(([year, n]) => (
-          <li class="grid grid-cols-[3.5rem_1fr_3rem] items-center gap-2">
-            <span class="font-medium">{year}</span>
-            <div class="h-4 rounded bg-neutral-200"><div class="h-4 rounded bg-brand" style={`width: ${Math.round((n / maxYear) * 100)}%`}></div></div>
-            <span class="text-right text-neutral-600">{fmt(n)}</span>
-          </li>
-        ))}
-      </ul>
-    </section>
-  </div>
-
-  <section class="mt-10">
-    <h2 class="display text-2xl">Empresas con más alojamientos</h2>
-    {s.companies.length > 0 ? (
-      <>
-        <p class="mt-1 max-w-2xl text-sm text-neutral-600">El registro sólo publica el nombre del titular cuando es una empresa. {fmt(s.individuals_count)} alojamientos son de particulares y no se puede saber cuántos tiene cada uno. Las {s.companies.length} empresas de esta lista suman {fmt(companiesTotal)}.</p>
-        <ol class="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-          {s.companies.map((c, i) => (
-            <li class="flex items-baseline justify-between gap-3 rounded-md border border-neutral-200 bg-white px-4 py-2 text-sm">
-              <span><span class="text-neutral-400">{i + 1}.</span> {c.name}</span>
-              <strong class="text-brand">{c.count}</strong>
-            </li>
-          ))}
-        </ol>
-      </>
+  <!-- 04 · Lecturas cruzadas -->
+  <section id="lecturas" class="mt-14 scroll-mt-6 border-t-3 border-neutral-900 pt-6">
+    <p class="font-mono text-xs uppercase tracking-widest text-neutral-600">04 · Cruces entre las fuentes · elaboración del sindicato</p>
+    <h2 class="display mt-1 text-4xl">Lecturas cruzadas</h2>
+    <p class="mt-3 max-w-2xl leading-relaxed">Cada fuente tiene su fecha y su método: estos cruces son órdenes de magnitud para comparar, no contabilidad exacta.</p>
+    {v || d ? (
+      <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {por100 != null && (
+          <div class="rounded-lg border border-neutral-200 bg-white p-5">
+            <p class="display text-3xl text-brand">{dec(por100)} turísticas</p>
+            <p class="mt-1 text-sm">por cada 100 viviendas de {s.name}</p>
+            <p class="mt-1 text-xs text-neutral-500">Media de la provincia: {dec(por100Prov)}. Turísticas de {stats.source_updated_at} sobre viviendas del INE 2021.</p>
+          </div>
+        )}
+        {sinUso != null && d && (
+          <div class="rounded-lg border border-neutral-200 bg-white p-5">
+            <p class="display text-3xl text-brand">{fmt(sinUso)} frente a {fmt(d.activas)}</p>
+            <p class="mt-1 text-sm">viviendas vacías más turísticas, frente a familias que esperan una vivienda protegida</p>
+            <p class="mt-1 text-xs text-neutral-500">{fmt(v!.empty)} vacías (2021) + {fmt(s.total)} turísticas; {fmt(d.activas)} inscripciones activas ({periodo}).</p>
+          </div>
+        )}
+        {d && (
+          <div class="rounded-lg border border-neutral-200 bg-white p-5">
+            <p class="display text-3xl text-brand">{dec((d.adjudicadas / d.inscritas) * 100)} de cada 100</p>
+            <p class="mt-1 text-sm">inscripciones han acabado en una vivienda protegida desde 2009</p>
+            <p class="mt-1 text-xs text-neutral-500">{fmt(d.adjudicadas)} adjudicadas de {fmt(d.inscritas)} inscripciones.</p>
+          </div>
+        )}
+      </div>
     ) : (
-      <p class="mt-1 text-sm text-neutral-600">Ninguna empresa identificada: todos los titulares de {s.name} son particulares.</p>
+      <p class="mt-3 text-sm text-neutral-600">Sin datos de vacías ni de demanda para {s.name}, no hay cruce posible.</p>
     )}
   </section>
-
-  <p class="mt-10 text-xs text-neutral-500">Generado el {stats.generated_at}. {s.skipped_without_valid_coordinates} registros descartados por coordenadas ausentes, fuera de la provincia o a más de 30 km del municipio. Este sitio se regenera automáticamente cada mes.</p>
 </Base>
