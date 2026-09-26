@@ -1,0 +1,336 @@
+{
+  "source": "Junta de Andalucía, Registros Municipales de Demandantes de Vivienda Protegida: solicitudes y estado de inscripciones a origen",
+  "source_url": "https://www.juntadeandalucia.es/organismos/viviendajuventudyordenaciondelterritorio/areas/vivienda-rehabilitacion/vivienda-protegida/paginas/rmdv-estadistica-mensual-2026.html",
+  "file_url": "https://www.juntadeandalucia.es/sites/default/files/inline-files/2026/09/202608_rmdvp01_solicitudes_estado_de_inscripciones_origen.xls",
+  "period": "2026-08",
+  "generated_at": "2026-09-26",
+  "province": {
+    "solicitudes": 71202,
+    "inscritas": 64066,
+    "activas": 23471,
+    "adjudicadas": 3338,
+    "caducadas": 37257,
+    "municipios": 34
+  },
+  "missing": [
+    "El Bosque",
+    "El Gastor",
+    "Grazalema",
+    "Jerez de la Frontera",
+    "Puerto Serrano",
+    "San Martín del Tesorillo",
+    "Setenil de las Bodegas",
+    "Torre Alháquime",
+    "Trebujena",
+    "Villaluenga del Rosario",
+    "Zahara de la Sierra"
+  ],
+  "municipios": {
+    "alcala-de-los-gazules": {
+      "ine": "11001",
+      "name": "Alcalá de los Gazules",
+      "solicitudes": 531,
+      "inscritas": 493,
+      "activas": 100,
+      "adjudicadas": 96,
+      "caducadas": 297
+    },
+    "alcala-del-valle": {
+      "ine": "11002",
+      "name": "Alcalá del Valle",
+      "solicitudes": 260,
+      "inscritas": 233,
+      "activas": 6,
+      "adjudicadas": 50,
+      "caducadas": 177
+    },
+    "algar": {
+      "ine": "11003",
+      "name": "Algar",
+      "solicitudes": 1,
+      "inscritas": 1,
+      "activas": 0,
+      "adjudicadas": 0,
+      "caducadas": 1
+    },
+    "algeciras": {
+      "ine": "11004",
+      "name": "Algeciras",
+      "solicitudes": 5219,
+      "inscritas": 5093,
+      "activas": 1396,
+      "adjudicadas": 274,
+      "caducadas": 3423
+    },
+    "algodonales": {
+      "ine": "11005",
+      "name": "Algodonales",
+      "solicitudes": 305,
+      "inscritas": 228,
+      "activas": 210,
+      "adjudicadas": 0,
+      "caducadas": 18
+    },
+    "arcos-de-la-frontera": {
+      "ine": "11006",
+      "name": "Arcos de la Frontera",
+      "solicitudes": 783,
+      "inscritas": 696,
+      "activas": 162,
+      "adjudicadas": 31,
+      "caducadas": 503
+    },
+    "barbate": {
+      "ine": "11007",
+      "name": "Barbate",
+      "solicitudes": 1491,
+      "inscritas": 489,
+      "activas": 251,
+      "adjudicadas": 0,
+      "caducadas": 238
+    },
+    "los-barrios": {
+      "ine": "11008",
+      "name": "Barrios (Los)",
+      "solicitudes": 1633,
+      "inscritas": 1587,
+      "activas": 586,
+      "adjudicadas": 9,
+      "caducadas": 992
+    },
+    "benalup-casas-viejas": {
+      "ine": "11901",
+      "name": "Benalup-Casas Viejas",
+      "solicitudes": 287,
+      "inscritas": 266,
+      "activas": 8,
+      "adjudicadas": 3,
+      "caducadas": 255
+    },
+    "benaocaz": {
+      "ine": "11009",
+      "name": "Benaocaz",
+      "solicitudes": 34,
+      "inscritas": 31,
+      "activas": 3,
+      "adjudicadas": 0,
+      "caducadas": 28
+    },
+    "bornos": {
+      "ine": "11010",
+      "name": "Bornos",
+      "solicitudes": 514,
+      "inscritas": 409,
+      "activas": 277,
+      "adjudicadas": 13,
+      "caducadas": 119
+    },
+    "cadiz": {
+      "ine": "11012",
+      "name": "Cádiz",
+      "solicitudes": 17859,
+      "inscritas": 15868,
+      "activas": 7280,
+      "adjudicadas": 923,
+      "caducadas": 7665
+    },
+    "castellar-de-la-frontera": {
+      "ine": "11013",
+      "name": "Castellar de la Frontera",
+      "solicitudes": 600,
+      "inscritas": 483,
+      "activas": 177,
+      "adjudicadas": 0,
+      "caducadas": 306
+    },
+    "chiclana-de-la-frontera": {
+      "ine": "11015",
+      "name": "Chiclana de la Frontera",
+      "solicitudes": 6758,
+      "inscritas": 6386,
+      "activas": 1937,
+      "adjudicadas": 380,
+      "caducadas": 4069
+    },
+    "chipiona": {
+      "ine": "11016",
+      "name": "Chipiona",
+      "solicitudes": 967,
+      "inscritas": 842,
+      "activas": 192,
+      "adjudicadas": 75,
+      "caducadas": 575
+    },
+    "conil-de-la-frontera": {
+      "ine": "11014",
+      "name": "Conil de la Frontera",
+      "solicitudes": 2910,
+      "inscritas": 2821,
+      "activas": 1270,
+      "adjudicadas": 125,
+      "caducadas": 1426
+    },
+    "espera": {
+      "ine": "11017",
+      "name": "Espera",
+      "solicitudes": 226,
+      "inscritas": 212,
+      "activas": 3,
+      "adjudicadas": 5,
+      "caducadas": 204
+    },
+    "jimena-de-la-frontera": {
+      "ine": "11021",
+      "name": "Jimena de la Frontera",
+      "solicitudes": 459,
+      "inscritas": 395,
+      "activas": 30,
+      "adjudicadas": 54,
+      "caducadas": 311
+    },
+    "la-linea-de-la-concepcion": {
+      "ine": "11022",
+      "name": "Línea de la Concepción (La)",
+      "solicitudes": 2175,
+      "inscritas": 2135,
+      "activas": 847,
+      "adjudicadas": 128,
+      "caducadas": 1160
+    },
+    "medina-sidonia": {
+      "ine": "11023",
+      "name": "Medina-Sidonia",
+      "solicitudes": 542,
+      "inscritas": 148,
+      "activas": 3,
+      "adjudicadas": 0,
+      "caducadas": 145
+    },
+    "olvera": {
+      "ine": "11024",
+      "name": "Olvera",
+      "solicitudes": 225,
+      "inscritas": 202,
+      "activas": 19,
+      "adjudicadas": 10,
+      "caducadas": 173
+    },
+    "paterna-de-rivera": {
+      "ine": "11025",
+      "name": "Paterna de Rivera",
+      "solicitudes": 262,
+      "inscritas": 182,
+      "activas": 95,
+      "adjudicadas": 0,
+      "caducadas": 87
+    },
+    "prado-del-rey": {
+      "ine": "11026",
+      "name": "Prado del Rey",
+      "solicitudes": 66,
+      "inscritas": 38,
+      "activas": 2,
+      "adjudicadas": 0,
+      "caducadas": 36
+    },
+    "el-puerto-de-santa-maria": {
+      "ine": "11027",
+      "name": "Puerto de Santa María (El)",
+      "solicitudes": 4048,
+      "inscritas": 3682,
+      "activas": 1428,
+      "adjudicadas": 330,
+      "caducadas": 1924
+    },
+    "puerto-real": {
+      "ine": "11028",
+      "name": "Puerto Real",
+      "solicitudes": 2867,
+      "inscritas": 2772,
+      "activas": 781,
+      "adjudicadas": 96,
+      "caducadas": 1895
+    },
+    "rota": {
+      "ine": "11030",
+      "name": "Rota",
+      "solicitudes": 3383,
+      "inscritas": 3115,
+      "activas": 1419,
+      "adjudicadas": 160,
+      "caducadas": 1536
+    },
+    "san-fernando": {
+      "ine": "11031",
+      "name": "San Fernando",
+      "solicitudes": 6568,
+      "inscritas": 6289,
+      "activas": 2200,
+      "adjudicadas": 15,
+      "caducadas": 4074
+    },
+    "san-jose-del-valle": {
+      "ine": "11902",
+      "name": "San José del Valle",
+      "solicitudes": 312,
+      "inscritas": 269,
+      "activas": 76,
+      "adjudicadas": 43,
+      "caducadas": 150
+    },
+    "san-roque": {
+      "ine": "11033",
+      "name": "San Roque",
+      "solicitudes": 2434,
+      "inscritas": 2317,
+      "activas": 852,
+      "adjudicadas": 161,
+      "caducadas": 1304
+    },
+    "sanlucar-de-barrameda": {
+      "ine": "11032",
+      "name": "Sanlúcar de Barrameda",
+      "solicitudes": 2282,
+      "inscritas": 2104,
+      "activas": 606,
+      "adjudicadas": 49,
+      "caducadas": 1449
+    },
+    "tarifa": {
+      "ine": "11035",
+      "name": "Tarifa",
+      "solicitudes": 3559,
+      "inscritas": 3114,
+      "activas": 924,
+      "adjudicadas": 274,
+      "caducadas": 1916
+    },
+    "ubrique": {
+      "ine": "11038",
+      "name": "Ubrique",
+      "solicitudes": 418,
+      "inscritas": 323,
+      "activas": 82,
+      "adjudicadas": 34,
+      "caducadas": 207
+    },
+    "vejer-de-la-frontera": {
+      "ine": "11039",
+      "name": "Vejer de la Frontera",
+      "solicitudes": 860,
+      "inscritas": 784,
+      "activas": 238,
+      "adjudicadas": 0,
+      "caducadas": 546
+    },
+    "villamartin": {
+      "ine": "11041",
+      "name": "Villamartín",
+      "solicitudes": 364,
+      "inscritas": 59,
+      "activas": 11,
+      "adjudicadas": 0,
+      "caducadas": 48
+    }
+  }
+}
