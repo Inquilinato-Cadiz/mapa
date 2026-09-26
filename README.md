@@ -32,6 +32,10 @@ Fuente: Dirección General del Catastro, extraído y filtrado por el grupo de da
 
 `data/fincas-cadiz.csv` es ese Excel exportado a CSV UTF-8 con estas columnas: `referencia_catastral, calle, numero, codigo_postal, lat, lon, superficie_construida_m2, anyo_construccion, viviendas`. `npm run fincas` ejecuta `scripts/build-fincas.mjs`, que escribe `public/data/fincas-cadiz.geojson` (lo carga el mapa) y `src/data/fincas.json` (cifras para la página). Para quitar una finca (por ejemplo, una promoción de vivienda pública) basta borrar su fila del CSV y volver a ejecutar. El Catastro no dice quién es el propietario, sólo que es uno.
 
+### Evolución mensual y padrón
+
+`npm run historico` (`scripts/build-historico.mjs`) añade a `src/data/historico.json` una foto de cada descarga de OpenRTA (fecha de los datos, total y plazas de la provincia, total por municipio); con dos o más fotos la página de datos enseña la evolución. `npm run poblacion` (`scripts/fetch-poblacion.mjs`) descarga del INE (tabla 2864, revisión del padrón) los habitantes de cada municipio a `src/data/poblacion.json`, para las plazas turísticas por habitante. Los dos van en `update-data.yml`.
+
 ### Viviendas vacías
 
 Fuente: INE, Censo de Población y Viviendas 2021, tabla 59531 «Viviendas según su intensidad de uso»: cada vivienda clasificada por su consumo eléctrico anual (vacía, bajo consumo, uso esporádico). `npm run vacias` ejecuta `scripts/fetch-vacias.mjs`, que descarga la tabla por la API del INE, se queda con los municipios de la provincia y escribe `src/data/vacias.json`. Es una foto a 1 de enero de 2021 y no cambia hasta el próximo censo, así que no va en el workflow mensual. El INE no publica el detalle de Benaocaz, Torre Alháquime y Villaluenga del Rosario (los agrupa en «Resto de Cádiz»).
@@ -65,7 +69,11 @@ npm run build
 - **Desahucios**: `src/data/desahucios.json`, regenerado por `update-data.yml` con `npm run desahucios`. Si el CGPJ cambia el nombre de las hojas, el script falla y se conserva el dato anterior.
 - **Demanda de vivienda protegida**: `src/data/demanda.json`, regenerado por `update-data.yml` con `npm run demanda`. La Junta publica cada mes con uno o dos de retraso.
 - **Índices para la calculadora de renta**: `src/data/indices.json`, regenerado por `update-data.yml` con `npm run indices`. El INE publica el IRAV y el IPC a mediados de mes, así que el día 1 se recoge el del mes anterior; la calculadora siempre permite escribir el valor a mano.
-- **Estadísticas**: Umami en `estadisticas.inquilinatocadiz.org` (servidor de Sindicadas, ver `sindicadas/docs/OPERACIONES.md`). El script va en `src/layouts/Base.astro`; sin cookies ni datos personales.
+- **Estadísticas**: Umami en `estadisticas.inquilinatocadiz.org` (servidor de Sindicadas, ver `sindicadas/docs/OPERACIONES.md`). El script va en `src/layouts/Base.astro`; sin cookies ni datos personales. Además de las páginas vistas se registran eventos de uso (`src/scripts/track.ts` y atributos `data-umami-event`), nunca con lo que escribe la persona:
+  - Utilidades: `renta-calcular` (régimen IRAV/IPC, tipo de cláusula, si hubo tope), `plazos-calcular` (particular/empresa, régimen), `contrato-resultado` (cláusulas marcadas, cuántas nulas, régimen), `serpavi` (clic al SERPAVI).
+  - Mapa: `mapa-municipio` (municipio elegido), `mapa-buscar` (una vez por visita), `mapa-filtro` (tipo o código postal), `mapa-filtro-empresas`, `mapa-ficha` (abrir un punto).
+  - Fincas: `fincas-buscar`, `fincas-filtro`, `fincas-ficha`, `fincas-organizate` (botón de la ficha).
+  - Conversión: `afiliate` con `origen` (cabecera, portada, tarjeta-…, unete), `amigas`, `participa`, `agenda-suscribirse`, `video-play`.
 - **Sin terceros**: la fuente Anton (`@fontsource/anton`) y Font Awesome (`@fortawesome/fontawesome-free`) se sirven desde el propio sitio, importados en `src/styles/global.css`. Ninguna visita carga nada de Google ni de un CDN.
 
 ## Origen

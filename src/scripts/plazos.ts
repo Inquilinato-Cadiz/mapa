@@ -1,3 +1,4 @@
+import { track } from "./track";
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const form = $<HTMLFormElement>("plazos");
 const start = $<HTMLInputElement>("start");
@@ -28,6 +29,7 @@ const render = () => {
   const agreed = Math.max(1, Number(months.value) || 12);
   const legal = landlord.value === "legal";
   const r = regimeFor(s, legal);
+  track("plazos-calcular", { arrendador: legal ? "empresa" : "particular", regimen: r.name });
 
   const agreedEnd = addMonths(s, agreed);
   const mandatoryEnd = addMonths(s, r.mandatoryYears * 12);

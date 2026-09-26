@@ -11,6 +11,72 @@
     "low": 18096,
     "sporadic": 64038
   },
+  "andalucia": {
+    "11": {
+      "name": "Cádiz",
+      "total": 648306,
+      "empty": 70177,
+      "median_kwh": 2232,
+      "low": 18096,
+      "sporadic": 64038
+    },
+    "14": {
+      "name": "Córdoba",
+      "total": 414025,
+      "empty": 52951,
+      "median_kwh": 2969,
+      "low": 10739,
+      "sporadic": 30237
+    },
+    "18": {
+      "name": "Granada",
+      "total": 573692,
+      "empty": 90443,
+      "median_kwh": 2356,
+      "low": 22103,
+      "sporadic": 57279
+    },
+    "21": {
+      "name": "Huelva",
+      "total": 320045,
+      "empty": 42246,
+      "median_kwh": 2024,
+      "low": 13789,
+      "sporadic": 44614
+    },
+    "23": {
+      "name": "Jaén",
+      "total": 373720,
+      "empty": 62393,
+      "median_kwh": 2839,
+      "low": 12282,
+      "sporadic": 31194
+    },
+    "29": {
+      "name": "Málaga",
+      "total": 996557,
+      "empty": 152843,
+      "median_kwh": 2352,
+      "low": 29139,
+      "sporadic": 89735
+    },
+    "41": {
+      "name": "Sevilla",
+      "total": 912899,
+      "empty": 97297,
+      "median_kwh": 2858,
+      "low": 15803,
+      "sporadic": 53150
+    },
+    "04": {
+      "name": "Almería",
+      "total": 433763,
+      "empty": 73222,
+      "median_kwh": 2333,
+      "low": 16069,
+      "sporadic": 45653
+    }
+  },
   "missing": [
     "Benaocaz",
     "Torre Alháquime",
