@@ -12,6 +12,7 @@
     "astro": "astro",
     "data": "node scripts/fetch-openrta.mjs",
     "fincas": "node scripts/build-fincas.mjs",
+    "indices": "node scripts/fetch-indices.mjs",
     "check": "astro check"
   },
   "dependencies": {
