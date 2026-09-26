@@ -2,6 +2,8 @@
 import Base from "../layouts/Base.astro";
 import stats from "../data/stats.json";
 import vacias from "../data/vacias.json";
+import demanda from "../data/demanda.json";
+import desahucios from "../data/desahucios.json";
 
 const fmt = (n: number) => n.toLocaleString("es-ES");
 const p = stats.province;
@@ -13,6 +15,15 @@ const companiesTotal = p.companies.reduce((s, c) => s + c.count, 0);
 type Vacias = { total: number; empty: number; low: number; sporadic: number; median_kwh: number };
 const v = vacias.province as Vacias;
 const vm = vacias.municipios as Record<string, Vacias | undefined>;
+type Demanda = { solicitudes: number; inscritas: number; activas: number; adjudicadas: number; caducadas: number };
+const dm = demanda.municipios as Record<string, Demanda | undefined>;
+const dp = demanda.province;
+const periodo = new Date(`${demanda.period}-01`).toLocaleDateString("es-ES", { month: "long", year: "numeric" });
+type Anual = { quarters: number; total: number; lau: number; hipotecaria: number; otros: number };
+const desYears = Object.entries(desahucios.by_year as Record<string, Anual>).filter(([, v]) => v.quarters === 4);
+const desMax = Math.max(1, ...desYears.map(([, v]) => v.total));
+const des = desahucios.last_year as Anual;
+const q = (s: string) => s.replace(/^(\d{4})-T(\d)$/, "$2.º trimestre de $1");
 const pct = (n: number, d: number) => `${((n / d) * 100).toLocaleString("es-ES", { maximumFractionDigits: 1 })} %`;
 ---
 
@@ -37,7 +48,7 @@ const pct = (n: number, d: number) => `${((n / d) * 100).toLocaleString("es-ES",
   <section class="mt-10">
     <h2 class="display text-2xl">Por municipio</h2>
     <table class="mt-3 w-full text-sm">
-      <thead class="text-left text-xs uppercase text-neutral-500"><tr><th class="py-1">Municipio</th><th class="py-1">Turísticas</th><th class="py-1">Plazas</th><th class="w-1/4 py-1"></th><th class="py-1" title="Viviendas vacías según el consumo eléctrico, INE 2021">Vacías (2021)</th><th class="py-1"></th></tr></thead>
+      <thead class="text-left text-xs uppercase text-neutral-500"><tr><th class="py-1">Municipio</th><th class="py-1">Turísticas</th><th class="py-1">Plazas</th><th class="w-1/4 py-1"></th><th class="py-1" title="Viviendas vacías según el consumo eléctrico, INE 2021">Vacías (2021)</th><th class="py-1" title="Inscripciones activas en el registro de demandantes de vivienda protegida">Esperan VPO</th><th class="py-1"></th></tr></thead>
       <tbody class="divide-y divide-neutral-100">
         {municipios.map((m) => (
           <tr>
@@ -46,6 +57,7 @@ const pct = (n: number, d: number) => `${((n / d) * 100).toLocaleString("es-ES",
             <td class="py-1.5">{fmt(m.places)}</td>
             <td class="py-1.5"><div class="h-3 rounded bg-brand" style={`width: ${Math.round((m.total / maxMuni) * 100)}%`}></div></td>
             <td class="py-1.5 text-neutral-700">{vm[m.slug] ? `${fmt(vm[m.slug]!.empty)} · ${pct(vm[m.slug]!.empty, vm[m.slug]!.total)}` : "—"}</td>
+            <td class="py-1.5 text-neutral-700">{dm[m.slug] ? fmt(dm[m.slug]!.activas) : "—"}</td>
             <td class="py-1.5 text-right"><a href={`/mapa/?m=${m.slug}`} class="text-xs underline">mapa</a></td>
           </tr>
         ))}
@@ -70,6 +82,58 @@ const pct = (n: number, d: number) => `${((n / d) * 100).toLocaleString("es-ES",
       ))}
     </dl>
     <p class="mt-3 text-xs text-neutral-500">Fuente: <a href={vacias.source_url} rel="noopener" class="underline">{vacias.source}</a>. Foto a 1 de enero de 2021: no se actualiza hasta el próximo censo. «Vacía» es una estimación por consumo eléctrico y mezcla pisos cerrados, en venta o en obras; en «uso esporádico» hay sobre todo segundas residencias. {vacias.missing.length > 0 && `El INE no publica el detalle de ${vacias.missing.join(", ")}: los agrupa con otros municipios pequeños.`}</p>
+  </section>
+
+  <section class="mt-10">
+    <h2 class="display text-2xl">Demanda de vivienda protegida</h2>
+    <p class="mt-1 max-w-2xl text-sm text-neutral-600">En los registros municipales de demandantes de la Junta hay <strong>{fmt(dp.activas)} inscripciones activas</strong> en {dp.municipios} municipios de la provincia: familias que esperan una vivienda protegida. Desde 2009 se han adjudicado {fmt(dp.adjudicadas)}. Datos de {periodo}.</p>
+    <dl class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {[
+        ["Familias inscritas (activas)", fmt(dp.activas)],
+        ["Adjudicaciones desde 2009", fmt(dp.adjudicadas)],
+        ["Solicitudes desde 2009", fmt(dp.solicitudes)],
+        ["Inscripciones caducadas", fmt(dp.caducadas)],
+      ].map(([label, value]) => (
+        <div class="rounded-lg border border-neutral-200 bg-white p-5">
+          <dt class="text-sm text-neutral-600">{label}</dt>
+          <dd class="display mt-1 text-4xl text-brand">{value}</dd>
+        </div>
+      ))}
+    </dl>
+    <p class="mt-3 text-xs text-neutral-500">Fuente: <a href={demanda.source_url} rel="noopener" class="underline">{demanda.source}</a>, {periodo}. Sólo cuenta los municipios que usan la herramienta común de la Junta{demanda.missing.length > 0 && `; sin dato de ${demanda.missing.join(", ")}, que llevan registro propio (Jerez) o no tienen inscripciones`}. Una inscripción es una unidad familiar. Se regenera cada mes.</p>
+  </section>
+
+  <section id="desahucios" class="mt-10 scroll-mt-6">
+    <h2 class="display text-2xl">Desahucios</h2>
+    <p class="mt-1 max-w-2xl text-sm text-neutral-600">Lanzamientos practicados por los juzgados en la provincia de Cádiz según el CGPJ. En {desahucios.last_full_year} fueron <strong>{fmt(des.total)}</strong>: {fmt(des.lau)} por impago o fin de contrato de alquiler (LAU), {fmt(des.hipotecaria)} por ejecución hipotecaria y {fmt(des.otros)} por otros procedimientos. Desde el {q(desahucios.last_4_quarters.from)} hasta el {q(desahucios.last_4_quarters.to)}: {fmt(desahucios.last_4_quarters.total)}.</p>
+    <dl class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {[
+        [`Desahucios en ${desahucios.last_full_year}`, fmt(des.total)],
+        ["De alquiler (LAU)", fmt(des.lau)],
+        ["Hipotecarios", fmt(des.hipotecaria)],
+        ["Otros", fmt(des.otros)],
+      ].map(([label, value]) => (
+        <div class="rounded-lg border border-neutral-200 bg-white p-5">
+          <dt class="text-sm text-neutral-600">{label}</dt>
+          <dd class="display mt-1 text-4xl text-brand">{value}</dd>
+        </div>
+      ))}
+    </dl>
+    <h3 class="mt-6 font-semibold">Por año, en toda la provincia</h3>
+    <p class="mt-1 text-sm text-neutral-600">En naranja, los de alquiler; en gris, hipotecarios y otros.</p>
+    <ul class="mt-3 max-w-2xl space-y-1.5 text-sm">
+      {desYears.map(([year, v]) => (
+        <li class="grid grid-cols-[3.5rem_1fr_4.5rem] items-center gap-2">
+          <span class="font-medium">{year}</span>
+          <div class="flex h-4 overflow-hidden rounded bg-neutral-200">
+            <div class="h-4 bg-brand" style={`width: ${(v.lau / desMax) * 100}%`} title={`${fmt(v.lau)} de alquiler`}></div>
+            <div class="h-4 bg-neutral-400" style={`width: ${((v.total - v.lau) / desMax) * 100}%`} title={`${fmt(v.total - v.lau)} hipotecarios y otros`}></div>
+          </div>
+          <span class="text-right text-neutral-600">{fmt(v.total)}</span>
+        </li>
+      ))}
+    </ul>
+    <p class="mt-3 text-xs text-neutral-500">Fuente: <a href={desahucios.source_url} rel="noopener" class="underline">{desahucios.source}</a>, hasta el {q(desahucios.last_quarter)}. Un lanzamiento es la ejecución del desalojo ordenado por un juzgado; no cuenta las salidas forzadas sin juicio ni los desahucios que se paran antes. Sólo hay dato provincial. Se regenera cada mes.</p>
   </section>
 
   <div class="mt-10 grid gap-8 lg:grid-cols-2">

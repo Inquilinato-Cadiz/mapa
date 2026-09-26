@@ -36,6 +36,14 @@ Fuente: Dirección General del Catastro, extraído y filtrado por el grupo de da
 
 Fuente: INE, Censo de Población y Viviendas 2021, tabla 59531 «Viviendas según su intensidad de uso»: cada vivienda clasificada por su consumo eléctrico anual (vacía, bajo consumo, uso esporádico). `npm run vacias` ejecuta `scripts/fetch-vacias.mjs`, que descarga la tabla por la API del INE, se queda con los municipios de la provincia y escribe `src/data/vacias.json`. Es una foto a 1 de enero de 2021 y no cambia hasta el próximo censo, así que no va en el workflow mensual. El INE no publica el detalle de Benaocaz, Torre Alháquime y Villaluenga del Rosario (los agrupa en «Resto de Cádiz»).
 
+### Demanda de vivienda protegida
+
+Fuente: Junta de Andalucía, estadística mensual de los Registros Municipales de Demandantes de Vivienda Protegida (fichero «Solicitudes y estado de inscripciones a origen»). `npm run demanda` ejecuta `scripts/fetch-demanda.mjs`, que busca en la web de la Junta el Excel del último mes, se queda con los municipios de la provincia y escribe `src/data/demanda.json`: solicitudes, inscripciones, activas (familias que esperan), adjudicadas y caducadas. Sólo aparecen los municipios que usan la herramienta común de la Junta; los que llevan registro propio quedan fuera y se listan en `missing`. Se regenera cada mes en `update-data.yml`; si la Junta cambia el formato, el script falla y se conserva el dato anterior.
+
+### Desahucios
+
+Fuente: Consejo General del Poder Judicial, Estadística Judicial, «Efecto de la crisis en los órganos judiciales», series por provincias: lanzamientos practicados por trimestre desde 2013, separados en alquiler (LAU), ejecución hipotecaria y otros. `npm run desahucios` ejecuta `scripts/fetch-desahucios.mjs`, que localiza en la página del CGPJ el Excel del último trimestre (el nombre cambia cada vez), lee las cuatro hojas de lanzamientos, se queda con la fila de Cádiz y escribe `src/data/desahucios.json` con las series, los totales por año, el último año completo y los últimos cuatro trimestres. Sólo hay dato provincial. Se regenera cada mes en `update-data.yml`; el CGPJ publica cada trimestre con dos o tres meses de retraso.
+
 `src/data/indices.json` guarda los valores mensuales de IPC e IRAV para la calculadora de renta. `npm run indices` ejecuta `scripts/fetch-indices.mjs`, que los descarga de la API del INE (series IPC290750 e IRAV1). La calculadora siempre permite escribir el valor a mano y enlaza al INE.
 
 ## Desarrollo
@@ -54,6 +62,8 @@ npm run build
 - **Dominio**: `inquilinatocadiz.org` (raíz) en `public/CNAME`. En Cloudflare (DNS only), cuatro registros `A` a las IPs de GitHub Pages (185.199.108-111.153) y `CNAME www → inquilinato-cadiz.github.io`. El dominio se fija en Settings → Pages (o `gh api -X PUT repos/Inquilinato-Cadiz/mapa/pages -f cname=…`): con despliegue por Actions, el fichero CNAME no lo cambia. El subdominio `mapa.inquilinatocadiz.org` (2026-09-04 a 2026-09-26) se dio de baja sin redirección. Certificado de GitHub emitido y HTTPS forzado (Settings → Pages). Si el certificado se atasca, quitar y volver a poner el dominio en Settings → Pages.
 - **Datos**: `update-data.yml` corre el día 1 de cada mes a las 05:17 UTC; también a mano en Actions → "Actualizar datos" → Run workflow. Si OpenRTA cambia el formato, el script falla y no hay commit: los datos anteriores siguen publicados.
 - **Redirecciones**: `/herramientas/*` (nombre de la primera versión) y `/afiliate/` (URL del WordPress) están en `astro.config.mjs`.
+- **Desahucios**: `src/data/desahucios.json`, regenerado por `update-data.yml` con `npm run desahucios`. Si el CGPJ cambia el nombre de las hojas, el script falla y se conserva el dato anterior.
+- **Demanda de vivienda protegida**: `src/data/demanda.json`, regenerado por `update-data.yml` con `npm run demanda`. La Junta publica cada mes con uno o dos de retraso.
 - **Índices para la calculadora de renta**: `src/data/indices.json`, regenerado por `update-data.yml` con `npm run indices`. El INE publica el IRAV y el IPC a mediados de mes, así que el día 1 se recoge el del mes anterior; la calculadora siempre permite escribir el valor a mano.
 - **Estadísticas**: Umami en `estadisticas.inquilinatocadiz.org` (servidor de Sindicadas, ver `sindicadas/docs/OPERACIONES.md`). El script va en `src/layouts/Base.astro`; sin cookies ni datos personales.
 - **Sin terceros**: la fuente Anton (`@fontsource/anton`) y Font Awesome (`@fortawesome/fontawesome-free`) se sirven desde el propio sitio, importados en `src/styles/global.css`. Ninguna visita carga nada de Google ni de un CDN.
