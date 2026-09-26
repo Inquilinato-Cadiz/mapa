@@ -1,3 +1,4 @@
+import { track, trackOnce } from "./track";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
@@ -156,9 +157,14 @@ muni.addEventListener("change", () => {
   url.searchParams.delete("cp");
   history.replaceState(null, "", url);
   q.value = "";
+  track("mapa-municipio", { municipio: muni.value });
   void load(muni.value);
 });
 [q, group, cp, companies].forEach((el) => el.addEventListener("input", render));
+q.addEventListener("input", () => trackOnce("mapa-buscar"));
+companies.addEventListener("input", () => track("mapa-filtro-empresas", { activo: companies.checked }));
+[group, cp].forEach((el) => el.addEventListener("input", () => track("mapa-filtro", { filtro: el.id })));
+map.on("popupopen", () => track("mapa-ficha"));
 await load(initial, params.get("cp") ?? "");
 
 // Módulo ES: evita que TypeScript comparta el ámbito global entre scripts.

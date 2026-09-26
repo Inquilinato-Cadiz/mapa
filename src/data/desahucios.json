@@ -1,7 +1,7 @@
 {
   "source": "Consejo General del Poder Judicial, Estadística Judicial: efecto de la crisis en los órganos judiciales, series por provincias. Lanzamientos practicados",
   "source_url": "https://www.poderjudicial.es/cgpj/es/Temas/Estadistica-Judicial/Estudios-e-Informes/Efecto-de-la-Crisis-en-los-organos-judiciales/",
-  "file_url": "https://www.poderjudicial.es/stfls/ESTADISTICA/FICHEROS/Crisis/Series%20-%20Efecto%20de%20la%20crisis%20en%20los%20organos%20judiciales%20por%20provincias%201T-2026_revisado.xlsx?t=202609264435",
+  "file_url": "https://www.poderjudicial.es/stfls/ESTADISTICA/FICHEROS/Crisis/Series%20-%20Efecto%20de%20la%20crisis%20en%20los%20organos%20judiciales%20por%20provincias%201T-2026_revisado.xlsx?t=202609260540",
   "province": "Cádiz",
   "last_quarter": "2026-T1",
   "last_full_year": "2025",
@@ -19,6 +19,48 @@
     "lau": 334,
     "hipotecaria": 111,
     "otros": 35
+  },
+  "andalucia": {
+    "ALMERIA": {
+      "year": "2025",
+      "total": 511,
+      "lau": 292
+    },
+    "CADIZ": {
+      "year": "2025",
+      "total": 495,
+      "lau": 359
+    },
+    "CORDOBA": {
+      "year": "2025",
+      "total": 199,
+      "lau": 119
+    },
+    "GRANADA": {
+      "year": "2025",
+      "total": 331,
+      "lau": 218
+    },
+    "HUELVA": {
+      "year": "2025",
+      "total": 247,
+      "lau": 151
+    },
+    "JAEN": {
+      "year": "2025",
+      "total": 139,
+      "lau": 84
+    },
+    "MALAGA": {
+      "year": "2025",
+      "total": 1136,
+      "lau": 866
+    },
+    "SEVILLA": {
+      "year": "2025",
+      "total": 724,
+      "lau": 511
+    }
   },
   "by_year": {
     "2013": {

@@ -1,3 +1,5 @@
+import { track } from "./track";
+
 type Indices = { ipc: { values: Record<string, number>; url: string }; irav: { values: Record<string, number>; url: string } };
 const indices = (window as unknown as { __indices: Indices }).__indices;
 
@@ -63,6 +65,7 @@ const render = () => {
       <h3 class="mt-4 font-medium">Qué contestar si te piden más</h3>
       <pre class="mt-2 whitespace-pre-wrap rounded-md bg-neutral-100 p-3 text-sm">Hola. He revisado la actualización de renta que me comunicas. Según el artículo 18 de la LAU y la Ley 12/2023, la actualización anual de mi contrato (firmado el ${signed.value.split("-").reverse().join("/")}) no puede superar el ${pct(Math.max(applied, 0))}, que corresponde a ${r.label.split(" (")[0]}. La renta actualizada queda en ${euro(newRent)} mensuales. Cualquier cantidad por encima no procede y no la abonaré. Un saludo.</pre>`;
   }
+  track("renta-calcular", { regimen: r.kind, clausula: clause.value, tope: r.cap != null });
   result.innerHTML = html;
   result.classList.remove("hidden");
 };

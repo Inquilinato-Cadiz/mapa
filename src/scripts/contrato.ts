@@ -1,3 +1,4 @@
+import { track } from "./track";
 type Level = "alto" | "medio" | "info";
 type Regime = "pre2013" | "r2013" | "r2019" | "r2023";
 type Ctx = { regime: Regime; legal: boolean; years: number };
@@ -120,6 +121,7 @@ form.addEventListener("submit", () => {
   const questions = new Map([...form.querySelectorAll<HTMLInputElement>("input[name=check]")].map((i) => [i.value, i.parentElement?.textContent?.trim() ?? i.value]));
   const selected = [...form.querySelectorAll<HTMLInputElement>("input[name=check]:checked")].map((i) => i.value);
   const hits = selected.map((id) => ({ id, q: questions.get(id) ?? id, ...rules[id](c) })).sort((a, b) => order.indexOf(a.level) - order.indexOf(b.level));
+  track("contrato-resultado", { marcadas: selected.length, nulas: hits.filter((h) => h.level === "alto").length, regimen: c.regime });
 
   if (hits.length === 0) {
     result.innerHTML = `<div class="rounded-lg border-2 border-brand bg-white p-5"><h2 class="display text-2xl">Nada de la lista</h2><p class="mt-2">No has marcado ninguna de las cláusulas habituales. Si algo del contrato te chirría igualmente, tráelo a la asamblea.</p></div>`;

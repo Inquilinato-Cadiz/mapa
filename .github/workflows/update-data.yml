@@ -19,6 +19,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run data
+      - run: npm run historico
+      - run: npm run poblacion
       - run: npm run indices
       - run: npm run demanda
       - run: npm run desahucios
@@ -26,7 +28,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public/data/municipios src/data/municipios.json src/data/stats.json src/data/indices.json src/data/demanda.json src/data/desahucios.json
+          git add public/data/municipios src/data/municipios.json src/data/stats.json src/data/indices.json src/data/demanda.json src/data/desahucios.json src/data/historico.json src/data/poblacion.json
           if git diff --cached --quiet; then
             echo "Sin cambios en los datos"
           else

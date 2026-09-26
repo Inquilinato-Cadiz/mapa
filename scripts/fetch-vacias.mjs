@@ -40,13 +40,21 @@ const series = await res.json();
 const out = {};
 let province = null;
 const warned = new Set();
+// Provincias andaluzas, para comparar tasas: código INE → nombre.
+const ANDALUCIA = { "04": "Almería", "11": "Cádiz", "14": "Córdoba", "18": "Granada", "21": "Huelva", "23": "Jaén", "29": "Málaga", "41": "Sevilla" };
+const andalucia = {};
 for (const s of series) {
-  const m = s.Nombre.match(/^(11\d{3}|11) (.+?), (.+)$/);
+  const m = s.Nombre.match(/^(\d{2}\d{3}|\d{2}) (.+?), (.+)$/);
   if (!m) continue;
   const [, code, name, field] = m;
   const key = FIELDS[field];
   if (!key) continue;
   const value = s.Data?.[0]?.Valor ?? null;
+  if (code.length === 2 && ANDALUCIA[code] === name) {
+    andalucia[code] ??= { name };
+    andalucia[code][key] = value;
+  }
+  if (!code.startsWith("11")) continue;
   if (code === "11") {
     if (name !== "Cádiz") continue; // «11 Galicia» es la comunidad autónoma 11
     province ??= { name: "Provincia de Cádiz" };
@@ -76,6 +84,7 @@ await writeFile(
       reference_date: "2021-01-01",
       generated_at: new Date().toISOString().slice(0, 10),
       province,
+      andalucia,
       missing,
       municipios: out,
     },
