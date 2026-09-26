@@ -1,0 +1,399 @@
+{
+  "source": "INE, Censo de Población y Viviendas 2021. Viviendas según su intensidad de uso (tabla 59531), a partir del consumo eléctrico anual",
+  "source_url": "https://www.ine.es/jaxi/Tabla.htm?tpx=59531&L=0",
+  "reference_date": "2021-01-01",
+  "generated_at": "2026-09-26",
+  "province": {
+    "name": "Provincia de Cádiz",
+    "total": 648306,
+    "empty": 70177,
+    "median_kwh": 2232,
+    "low": 18096,
+    "sporadic": 64038
+  },
+  "missing": [
+    "Benaocaz",
+    "Torre Alháquime",
+    "Villaluenga del Rosario"
+  ],
+  "municipios": {
+    "alcala-de-los-gazules": {
+      "ine": "11001",
+      "name": "Alcalá de los Gazules",
+      "total": 3403,
+      "empty": 806,
+      "median_kwh": 1818,
+      "low": 160,
+      "sporadic": 394
+    },
+    "alcala-del-valle": {
+      "ine": "11002",
+      "name": "Alcalá del Valle",
+      "total": 2436,
+      "empty": 316,
+      "median_kwh": 2234,
+      "low": 97,
+      "sporadic": 227
+    },
+    "algar": {
+      "ine": "11003",
+      "name": "Algar",
+      "total": 931,
+      "empty": 118,
+      "median_kwh": 1885,
+      "low": 43,
+      "sporadic": 129
+    },
+    "algeciras": {
+      "ine": "11004",
+      "name": "Algeciras",
+      "total": 55815,
+      "empty": 7611,
+      "median_kwh": 2261,
+      "low": 1092,
+      "sporadic": 3904
+    },
+    "algodonales": {
+      "ine": "11005",
+      "name": "Algodonales",
+      "total": 3445,
+      "empty": 885,
+      "median_kwh": 2091,
+      "low": 123,
+      "sporadic": 341
+    },
+    "arcos-de-la-frontera": {
+      "ine": "11006",
+      "name": "Arcos de la Frontera",
+      "total": 15460,
+      "empty": 2831,
+      "median_kwh": 2328,
+      "low": 392,
+      "sporadic": 1317
+    },
+    "barbate": {
+      "ine": "11007",
+      "name": "Barbate",
+      "total": 14124,
+      "empty": 1666,
+      "median_kwh": 1852,
+      "low": 683,
+      "sporadic": 2021
+    },
+    "los-barrios": {
+      "ine": "11008",
+      "name": "Barrios (Los)",
+      "total": 10707,
+      "empty": 1552,
+      "median_kwh": 2529,
+      "low": 176,
+      "sporadic": 607
+    },
+    "bornos": {
+      "ine": "11010",
+      "name": "Bornos",
+      "total": 3793,
+      "empty": 635,
+      "median_kwh": 2397,
+      "low": 97,
+      "sporadic": 362
+    },
+    "el-bosque": {
+      "ine": "11011",
+      "name": "Bosque (El)",
+      "total": 1565,
+      "empty": 227,
+      "median_kwh": 2121,
+      "low": 82,
+      "sporadic": 212
+    },
+    "cadiz": {
+      "ine": "11012",
+      "name": "Cádiz",
+      "total": 56479,
+      "empty": 2748,
+      "median_kwh": 1991,
+      "low": 1357,
+      "sporadic": 4732
+    },
+    "castellar-de-la-frontera": {
+      "ine": "11013",
+      "name": "Castellar de la Frontera",
+      "total": 1420,
+      "empty": 325,
+      "median_kwh": 2491,
+      "low": 26,
+      "sporadic": 73
+    },
+    "conil-de-la-frontera": {
+      "ine": "11014",
+      "name": "Conil de la Frontera *",
+      "total": 16919,
+      "empty": 1014,
+      "median_kwh": 2036,
+      "low": 812,
+      "sporadic": 2680
+    },
+    "chiclana-de-la-frontera": {
+      "ine": "11015",
+      "name": "Chiclana de la Frontera",
+      "total": 49229,
+      "empty": 4194,
+      "median_kwh": 2298,
+      "low": 1365,
+      "sporadic": 5508
+    },
+    "chipiona": {
+      "ine": "11016",
+      "name": "Chipiona",
+      "total": 19902,
+      "empty": 1353,
+      "median_kwh": 1140,
+      "low": 1619,
+      "sporadic": 5698
+    },
+    "espera": {
+      "ine": "11017",
+      "name": "Espera",
+      "total": 1934,
+      "empty": 460,
+      "median_kwh": 2556,
+      "low": 50,
+      "sporadic": 149
+    },
+    "el-gastor": {
+      "ine": "11018",
+      "name": "Gastor (El)",
+      "total": 1223,
+      "empty": 340,
+      "median_kwh": 1941,
+      "low": 61,
+      "sporadic": 125
+    },
+    "grazalema": {
+      "ine": "11019",
+      "name": "Grazalema",
+      "total": 1857,
+      "empty": 352,
+      "median_kwh": 1519,
+      "low": 142,
+      "sporadic": 332
+    },
+    "jerez-de-la-frontera": {
+      "ine": "11020",
+      "name": "Jerez de la Frontera",
+      "total": 92974,
+      "empty": 7562,
+      "median_kwh": 2598,
+      "low": 1566,
+      "sporadic": 5385
+    },
+    "jimena-de-la-frontera": {
+      "ine": "11021",
+      "name": "Jimena de la Frontera",
+      "total": 4238,
+      "empty": 1119,
+      "median_kwh": 2386,
+      "low": 121,
+      "sporadic": 371
+    },
+    "la-linea-de-la-concepcion": {
+      "ine": "11022",
+      "name": "Línea de la Concepción (La)",
+      "total": 30028,
+      "empty": 4860,
+      "median_kwh": 2317,
+      "low": 570,
+      "sporadic": 1938
+    },
+    "medina-sidonia": {
+      "ine": "11023",
+      "name": "Medina-Sidonia",
+      "total": 6035,
+      "empty": 1222,
+      "median_kwh": 2155,
+      "low": 154,
+      "sporadic": 479
+    },
+    "olvera": {
+      "ine": "11024",
+      "name": "Olvera",
+      "total": 5410,
+      "empty": 1522,
+      "median_kwh": 2022,
+      "low": 240,
+      "sporadic": 420
+    },
+    "paterna-de-rivera": {
+      "ine": "11025",
+      "name": "Paterna de Rivera",
+      "total": 2657,
+      "empty": 652,
+      "median_kwh": 2453,
+      "low": 64,
+      "sporadic": 183
+    },
+    "prado-del-rey": {
+      "ine": "11026",
+      "name": "Prado del Rey *",
+      "total": 3163,
+      "empty": 349,
+      "median_kwh": 2224,
+      "low": 134,
+      "sporadic": 324
+    },
+    "el-puerto-de-santa-maria": {
+      "ine": "11027",
+      "name": "Puerto de Santa María (El)",
+      "total": 49077,
+      "empty": 5400,
+      "median_kwh": 2307,
+      "low": 1328,
+      "sporadic": 5186
+    },
+    "puerto-real": {
+      "ine": "11028",
+      "name": "Puerto Real",
+      "total": 18626,
+      "empty": 1009,
+      "median_kwh": 2373,
+      "low": 314,
+      "sporadic": 1165
+    },
+    "puerto-serrano": {
+      "ine": "11029",
+      "name": "Puerto Serrano",
+      "total": 3253,
+      "empty": 743,
+      "median_kwh": 2781,
+      "low": 87,
+      "sporadic": 274
+    },
+    "rota": {
+      "ine": "11030",
+      "name": "Rota",
+      "total": 26868,
+      "empty": 1707,
+      "median_kwh": 1415,
+      "low": 1220,
+      "sporadic": 6033
+    },
+    "san-fernando": {
+      "ine": "11031",
+      "name": "San Fernando",
+      "total": 39564,
+      "empty": 1934,
+      "median_kwh": 2291,
+      "low": 769,
+      "sporadic": 2299
+    },
+    "sanlucar-de-barrameda": {
+      "ine": "11032",
+      "name": "Sanlúcar de Barrameda",
+      "total": 34536,
+      "empty": 2348,
+      "median_kwh": 2281,
+      "low": 1052,
+      "sporadic": 3995
+    },
+    "san-roque": {
+      "ine": "11033",
+      "name": "San Roque",
+      "total": 19625,
+      "empty": 4521,
+      "median_kwh": 2540,
+      "low": 383,
+      "sporadic": 1326
+    },
+    "setenil-de-las-bodegas": {
+      "ine": "11034",
+      "name": "Setenil de las Bodegas",
+      "total": 1727,
+      "empty": 259,
+      "median_kwh": 2250,
+      "low": 81,
+      "sporadic": 186
+    },
+    "tarifa": {
+      "ine": "11035",
+      "name": "Tarifa",
+      "total": 13599,
+      "empty": 1930,
+      "median_kwh": 1626,
+      "low": 524,
+      "sporadic": 2336
+    },
+    "trebujena": {
+      "ine": "11037",
+      "name": "Trebujena",
+      "total": 3344,
+      "empty": 466,
+      "median_kwh": 2779,
+      "low": 56,
+      "sporadic": 238
+    },
+    "ubrique": {
+      "ine": "11038",
+      "name": "Ubrique",
+      "total": 8361,
+      "empty": 772,
+      "median_kwh": 2266,
+      "low": 202,
+      "sporadic": 755
+    },
+    "vejer-de-la-frontera": {
+      "ine": "11039",
+      "name": "Vejer de la Frontera",
+      "total": 8392,
+      "empty": 1582,
+      "median_kwh": 2179,
+      "low": 344,
+      "sporadic": 887
+    },
+    "villamartin": {
+      "ine": "11041",
+      "name": "Villamartín",
+      "total": 6185,
+      "empty": 1185,
+      "median_kwh": 2609,
+      "low": 145,
+      "sporadic": 412
+    },
+    "zahara-de-la-sierra": {
+      "ine": "11042",
+      "name": "Zahara",
+      "total": 915,
+      "empty": 164,
+      "median_kwh": 1715,
+      "low": 58,
+      "sporadic": 138
+    },
+    "benalup-casas-viejas": {
+      "ine": "11901",
+      "name": "Benalup-Casas Viejas",
+      "total": 3519,
+      "empty": 459,
+      "median_kwh": 2242,
+      "low": 83,
+      "sporadic": 287
+    },
+    "san-jose-del-valle": {
+      "ine": "11902",
+      "name": "San José del Valle",
+      "total": 2360,
+      "empty": 367,
+      "median_kwh": 2309,
+      "low": 55,
+      "sporadic": 221
+    },
+    "san-martin-del-tesorillo": {
+      "ine": "11903",
+      "name": "San Martín del Tesorillo *",
+      "total": 1346,
+      "empty": 87,
+      "median_kwh": 2577,
+      "low": 49,
+      "sporadic": 103
+    }
+  }
+}
