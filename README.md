@@ -1,6 +1,6 @@
-# Mapa de viviendas turísticas y herramientas para inquilinas
+# inquilinatocadiz.org
 
-Sitio estático del Sindicato de Inquilinas e Inquilinos de Cádiz en `mapa.inquilinatocadiz.org`. Astro 7 + Tailwind 4 + Leaflet. Sin backend: todo se calcula en el navegador y nada de lo que escribe la gente sale de su equipo.
+Web del Sindicato de Inquilinas e Inquilinos de Cádiz: portada, agenda, mapa de viviendas turísticas, datos de vivienda y utilidades para inquilinas. Sitio estático con Astro 7 + Tailwind 4 + Leaflet. Sin backend: todo se calcula en el navegador y nada de lo que escribe la gente sale de su equipo.
 
 ## Qué hay
 
