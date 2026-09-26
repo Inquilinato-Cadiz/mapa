@@ -77,7 +77,7 @@ const toolsActive = tools.some((t) => active(t.href));
             {nav.slice(3).map((item) => (
               <a href={item.href} class:list={["border-b-3 pb-0.5 hover:text-brand", active(item.href) ? "border-ink" : "border-transparent"]}>{item.label}</a>
             ))}
-            <a href={AFILIATE} class="brut brut-hover bg-brand px-3 py-1 text-white">Afíliate</a>
+            <a href={AFILIATE} class="brut brut-hover bg-brand px-3 py-1 text-white" data-umami-event="afiliate" data-umami-event-origen="cabecera">Afíliate</a>
           </nav>
         </div>
       </div>

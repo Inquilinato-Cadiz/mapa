@@ -22,6 +22,8 @@ const SHEETS = {
   otros: /^Lanzamientos\.? Otros prov/i,
 };
 const PROVINCE = /^C[AÁ]DIZ$/i;
+const ANDALUCIA = ["ALMERIA", "CADIZ", "CORDOBA", "GRANADA", "HUELVA", "JAEN", "MALAGA", "SEVILLA"];
+const plain = (s) => String(s).trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
 const QUARTER = /^(\d{2})-+T(\d)/;
 
 const page = await fetch(PAGE, UA);
@@ -35,12 +37,12 @@ const res = await fetch(fileUrl, UA);
 if (!res.ok) throw new Error(`${fileUrl}: HTTP ${res.status}`);
 const wb = XLSX.read(Buffer.from(await res.arrayBuffer()), { type: "buffer" });
 
-// Fila de cabecera con «13-T1, 13-T2…» y fila de CÁDIZ, en la columna que sea.
-function series(sheetName) {
+// Fila de cabecera con «13-T1, 13-T2…» y fila de la provincia pedida, en la columna que sea.
+function series(sheetName, province = "CADIZ") {
   const rows = XLSX.utils.sheet_to_json(wb.Sheets[sheetName], { header: 1, defval: "" });
   const header = rows.find((r) => r.filter((c) => QUARTER.test(String(c).trim())).length >= 4);
-  const row = rows.find((r) => r.some((c) => PROVINCE.test(String(c).trim())));
-  if (!header || !row) throw new Error(`${sheetName}: no encuentro la cabecera o la fila de Cádiz`);
+  const row = rows.find((r) => r.some((c) => plain(c) === province));
+  if (!header || !row) throw new Error(`${sheetName}: no encuentro la cabecera o la fila de ${province}`);
   const out = {};
   header.forEach((cell, i) => {
     const m = String(cell).trim().match(QUARTER);
@@ -57,6 +59,14 @@ for (const [key, re] of Object.entries(SHEETS)) {
   const name = wb.SheetNames.find((n) => re.test(n.trim()));
   if (!name) throw new Error(`Falta la hoja de ${key}: ${wb.SheetNames.join(" · ")}`);
   data[key] = series(name);
+}
+
+// Las ocho provincias andaluzas, total y alquiler del último año completo, para comparar tasas.
+const andalucia = {};
+for (const prov of ANDALUCIA) {
+  const total = series(wb.SheetNames.find((n) => SHEETS.total.test(n.trim())), prov);
+  const lau = series(wb.SheetNames.find((n) => SHEETS.lau.test(n.trim())), prov);
+  andalucia[prov] = { total, lau };
 }
 
 const quarters = Object.keys(data.total).sort();
@@ -84,6 +94,12 @@ await writeFile(
       last_full_year: lastFullYear,
       last_year: byYear[lastFullYear],
       last_4_quarters: { from: last4[0], to: last, total: sum("total"), lau: sum("lau"), hipotecaria: sum("hipotecaria"), otros: sum("otros") },
+      andalucia: Object.fromEntries(
+        Object.entries(andalucia).map(([prov, s]) => {
+          const yq = Object.keys(s.total).filter((k) => k.startsWith(lastFullYear));
+          return [prov, { year: lastFullYear, total: yq.reduce((a, k) => a + (s.total[k] ?? 0), 0), lau: yq.reduce((a, k) => a + (s.lau[k] ?? 0), 0) }];
+        }),
+      ),
       by_year: byYear,
       quarters: data,
       generated_at: new Date().toISOString().slice(0, 10),
