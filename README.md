@@ -32,6 +32,10 @@ Fuente: Dirección General del Catastro, extraído y filtrado por el grupo de da
 
 `data/fincas-cadiz.csv` es ese Excel exportado a CSV UTF-8 con estas columnas: `referencia_catastral, calle, numero, codigo_postal, lat, lon, superficie_construida_m2, anyo_construccion, viviendas`. `npm run fincas` ejecuta `scripts/build-fincas.mjs`, que escribe `public/data/fincas-cadiz.geojson` (lo carga el mapa) y `src/data/fincas.json` (cifras para la página). Para quitar una finca (por ejemplo, una promoción de vivienda pública) basta borrar su fila del CSV y volver a ejecutar. El Catastro no dice quién es el propietario, sólo que es uno.
 
+### Viviendas vacías
+
+Fuente: INE, Censo de Población y Viviendas 2021, tabla 59531 «Viviendas según su intensidad de uso»: cada vivienda clasificada por su consumo eléctrico anual (vacía, bajo consumo, uso esporádico). `npm run vacias` ejecuta `scripts/fetch-vacias.mjs`, que descarga la tabla por la API del INE, se queda con los municipios de la provincia y escribe `src/data/vacias.json`. Es una foto a 1 de enero de 2021 y no cambia hasta el próximo censo, así que no va en el workflow mensual. El INE no publica el detalle de Benaocaz, Torre Alháquime y Villaluenga del Rosario (los agrupa en «Resto de Cádiz»).
+
 `src/data/indices.json` guarda los valores mensuales de IPC e IRAV para la calculadora de renta. `npm run indices` ejecuta `scripts/fetch-indices.mjs`, que los descarga de la API del INE (series IPC290750 e IRAV1). La calculadora siempre permite escribir el valor a mano y enlaza al INE.
 
 ## Desarrollo

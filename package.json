@@ -13,6 +13,7 @@
     "data": "node scripts/fetch-openrta.mjs",
     "fincas": "node scripts/build-fincas.mjs",
     "indices": "node scripts/fetch-indices.mjs",
+    "vacias": "node scripts/fetch-vacias.mjs",
     "check": "astro check"
   },
   "dependencies": {
