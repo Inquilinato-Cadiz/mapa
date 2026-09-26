@@ -4,11 +4,17 @@ Sitio estático del Sindicato de Inquilinas e Inquilinos de Cádiz en `mapa.inqu
 
 ## Qué hay
 
-- `/` Mapa de viviendas de uso turístico y apartamentos turísticos de los 45 municipios de la provincia de Cádiz: selector de municipio, buscador por calle y filtros por tipo, código postal y titular empresa. `/?m=tarifa` abre un municipio; `&cp=11380` filtra un código postal.
+Es la web del Sindicato de Inquilinas e Inquilinos de Cádiz (`inquilinatocadiz.org`), un sitio estático hecho con Astro. Sustituye al WordPress anterior.
+
+- `/` Portada: quiénes somos, cifras del mapa, próximas convocatorias, participa y vídeo.
+- `/participa/`, `/agenda/`, `/unete/` y `/aviso-legal-y-privacidad/` Páginas del sindicato. La agenda se carga en el navegador desde `sindicadas.inquilinatocadiz.org/agenda.json`; si no responde, enlaza a la agenda de Sindicadas.
+- `/mapa/` Mapa de viviendas de uso turístico y apartamentos turísticos de los 45 municipios de la provincia de Cádiz: selector de municipio, buscador por calle y filtros por tipo, código postal y titular empresa. `/mapa/?m=tarifa` abre un municipio; `&cp=11380` filtra un código postal.
 - `/fincas/` Mapa de las fincas de la ciudad de Cádiz que pertenecen enteras a un único propietario (sin división horizontal) con 5 o más viviendas, con buscador por calle y filtros por tamaño y código postal. Llamada a organizarse con las vecinas.
 - `/datos/` Cifras de la provincia y ranking por municipio; `/datos/<municipio>/` para cada uno: totales, plazas, por código postal, altas por año y empresas con más alojamientos.
 - `/denuncia/` Cómo denunciar una vivienda turística ilegal.
 - `/utilidades/` Calculadora de actualización de renta (IRAV/IPC), calculadora de plazos LAU, comprobador de cláusulas del contrato y guía del precio de referencia.
+
+Diseño: Anton para titulares, bordes negros y sombras duras, animaciones en CSS que respetan `prefers-reduced-motion`. Los vídeos de YouTube no cargan nada de Google hasta que se pulsan (`youtube-nocookie.com`). En desarrollo, `PUBLIC_AGENDA_SOURCE=http://localhost:3000/agenda.json` apunta la agenda a un Sindicadas local.
 
 ## Datos
 
@@ -41,9 +47,9 @@ npm run build
 ## Despliegue y operación
 
 - **GitHub Pages desde Actions** (`.github/workflows/deploy.yml`): cada push a `main` construye y publica. El repo es público porque Pages en el plan gratuito lo exige.
-- **Dominio**: `mapa.inquilinatocadiz.org` con `CNAME → inquilinato-cadiz.github.io` en Cloudflare (DNS only) y `public/CNAME`. Certificado de GitHub emitido y HTTPS forzado (Settings → Pages). Si el certificado se atasca, quitar y volver a poner el dominio en Settings → Pages.
+- **Dominio**: `inquilinatocadiz.org` (raíz) en `public/CNAME`. En Cloudflare, registros `A` a las IPs de GitHub Pages y `CNAME www → inquilinato-cadiz.github.io`. `mapa.inquilinatocadiz.org` redirige con una regla de Cloudflare a la misma ruta en el dominio raíz (la raíz a `/mapa/`). Certificado de GitHub emitido y HTTPS forzado (Settings → Pages). Si el certificado se atasca, quitar y volver a poner el dominio en Settings → Pages.
 - **Datos**: `update-data.yml` corre el día 1 de cada mes a las 05:17 UTC; también a mano en Actions → "Actualizar datos" → Run workflow. Si OpenRTA cambia el formato, el script falla y no hay commit: los datos anteriores siguen publicados.
-- **Enlaces desde la web**: menú Herramientas de inquilinatocadiz.org (Mapa, Datos, Utilidades, Denunciar). La sección se llamó `/herramientas/` en la primera versión; hay redirecciones.
+- **Redirecciones**: `/herramientas/*` (nombre de la primera versión) y `/afiliate/` (URL del WordPress) están en `astro.config.mjs`.
 - **Índices para la calculadora de renta**: `src/data/indices.json`, a mano. El IRAV lo publica el INE mensualmente y la calculadora siempre permite escribirlo.
 - **Estadísticas**: Umami en `estadisticas.inquilinatocadiz.org` (servidor de Sindicadas, ver `sindicadas/docs/OPERACIONES.md`). El script va en `src/layouts/Base.astro`; sin cookies ni datos personales.
 - **Sin terceros**: la fuente Anton (`@fontsource/anton`) y Font Awesome (`@fortawesome/fontawesome-free`) se sirven desde el propio sitio, importados en `src/styles/global.css`. Ninguna visita carga nada de Google ni de un CDN.

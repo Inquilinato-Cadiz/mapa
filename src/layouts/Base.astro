@@ -11,16 +11,15 @@ interface Props {
 const { title, description = "Sindicato de Inquilinas e Inquilinos de Cádiz. Organizadas contra el rentismo: mapa de viviendas turísticas, datos y herramientas para inquilinas.", fullBleed = false } = Astro.props;
 
 
-// Maqueta: «Inicio» vive en /inicio/ hasta que el mapa pase a /mapa/.
 const nav = [
-  { href: "/inicio/", label: "Inicio" },
+  { href: "/", label: "Inicio" },
   { href: "/participa/", label: "Participa" },
   { href: "/agenda/", label: "Agenda" },
   { href: "/unete/", label: "Únete" },
   { href: CONTACTO, label: "Contacto" },
 ];
 const tools = [
-  { href: "/", label: "Mapa" },
+  { href: "/mapa/", label: "Mapa" },
   { href: "/fincas/", label: "Fincas" },
   { href: "/datos/", label: "Datos" },
   { href: "/utilidades/", label: "Utilidades" },
@@ -58,7 +57,7 @@ const toolsActive = tools.some((t) => active(t.href));
       </div>
       <div class="border-b-3 border-ink bg-white">
         <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-3 px-4 py-4">
-          <a href="/inicio/" class="shrink-0" title="Sindicato de Inquilinas e Inquilinos de Cádiz">
+          <a href="/" class="shrink-0" title="Sindicato de Inquilinas e Inquilinos de Cádiz">
             <img src="/logo-cabecera.png" alt="Sindicato de Inquilinas e Inquilinos de Cádiz" width="726" height="162" class="h-11 w-auto" />
           </a>
           <nav class="display relative flex flex-wrap items-center gap-x-6 gap-y-3 text-lg tracking-wide">
@@ -90,7 +89,7 @@ const toolsActive = tools.some((t) => active(t.href));
 
     <footer class="border-t-3 border-ink bg-ink text-white">
       <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-4 px-4 py-6">
-        <a href="/inicio/" class="display text-2xl italic leading-none" title="Sindicato de Inquilinas e Inquilinos de Cádiz">SIC</a>
+        <a href="/" class="display text-2xl italic leading-none" title="Sindicato de Inquilinas e Inquilinos de Cádiz">SIC</a>
         <nav class="display flex flex-wrap items-center gap-x-6 gap-y-1 text-sm italic tracking-wide">
           <a href="/participa/" class="hover:text-brand">Participa</a>
           <a href="/aviso-legal-y-privacidad/" class="hover:text-brand">Aviso legal y privacidad</a>

@@ -31,7 +31,7 @@ const companiesTotal = s.companies.reduce((sum, c) => sum + c.count, 0);
 <Base title={`Datos de la turistificación en ${s.name}`}>
   <p class="text-sm text-neutral-500"><a href="/datos/" class="hover:underline">Provincia de Cádiz</a> / {s.name}</p>
   <h1 class="display text-4xl">{s.name} en cifras</h1>
-  <p class="mt-2 max-w-2xl text-neutral-600">Lo que dice el Registro de Turismo de Andalucía sobre {s.name}. Fuente oficial, actualizada el {stats.source_updated_at}. Sólo se cuentan viviendas de uso turístico y apartamentos turísticos con coordenadas válidas. <a href={`/?m=${municipio}`} class="underline">Ver en el mapa</a>.</p>
+  <p class="mt-2 max-w-2xl text-neutral-600">Lo que dice el Registro de Turismo de Andalucía sobre {s.name}. Fuente oficial, actualizada el {stats.source_updated_at}. Sólo se cuentan viviendas de uso turístico y apartamentos turísticos con coordenadas válidas. <a href={`/mapa/?m=${municipio}`} class="underline">Ver en el mapa</a>.</p>
 
   <dl class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
     {[
@@ -57,7 +57,7 @@ const companiesTotal = s.companies.reduce((sum, c) => sum + c.count, 0);
         <tbody class="divide-y divide-neutral-100">
           {byCp.map(([cp, n]) => (
             <tr>
-              <td class="py-1.5 font-medium"><a href={`/?m=${municipio}&cp=${cp}`} class="hover:underline">{cp}</a></td>
+              <td class="py-1.5 font-medium"><a href={`/mapa/?m=${municipio}&cp=${cp}`} class="hover:underline">{cp}</a></td>
               <td class="py-1.5">{fmt(n)}</td>
               <td class="py-1.5"><div class="h-3 rounded bg-brand" style={`width: ${Math.round((n / byCp[0][1]) * 100)}%`}></div></td>
             </tr>
