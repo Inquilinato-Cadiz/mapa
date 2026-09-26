@@ -16,6 +16,8 @@
     "vacias": "node scripts/fetch-vacias.mjs",
     "demanda": "node scripts/fetch-demanda.mjs",
     "desahucios": "node scripts/fetch-desahucios.mjs",
+    "poblacion": "node scripts/fetch-poblacion.mjs",
+    "historico": "node scripts/build-historico.mjs",
     "check": "astro check"
   },
   "dependencies": {

@@ -28,6 +28,7 @@ const { id, title, poster, credit } = Astro.props;
 </figure>
 
 <script>
+  import { track } from "../scripts/track";
   document.querySelectorAll<HTMLElement>(".video").forEach((fig) => {
     const button = fig.querySelector("button");
     button?.addEventListener("click", () => {
@@ -37,6 +38,7 @@ const { id, title, poster, credit } = Astro.props;
       iframe.title = button.getAttribute("aria-label") ?? "Vídeo";
       iframe.allow = "autoplay; encrypted-media; picture-in-picture";
       iframe.allowFullscreen = true;
+      track("video-play", { id: fig.dataset.id ?? "" });
       button.replaceWith(iframe);
     });
   });

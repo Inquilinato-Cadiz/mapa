@@ -5,6 +5,8 @@ import stats from "../data/stats.json";
 import vacias from "../data/vacias.json";
 import demanda from "../data/demanda.json";
 import desahucios from "../data/desahucios.json";
+import poblacion from "../data/poblacion.json";
+import historico from "../data/historico.json";
 
 const fmt = (n: number) => n.toLocaleString("es-ES");
 const dec = (n: number, d = 1) => n.toLocaleString("es-ES", { maximumFractionDigits: d });
@@ -56,6 +58,23 @@ const horasPorAlta = 8760 / Math.max(1, altasLastYear);
 const horasPorDesahucio = 8760 / Math.max(1, des.total);
 const lauShareFirst = (desFirst.lau / desFirst.total) * 100;
 const lauShareLast = (des.lau / des.total) * 100;
+const hab = poblacion.municipios as Record<string, number>;
+const plazasHab = municipios
+  .filter((m) => hab[m.slug] > 0)
+  .map((m) => ({ ...m, hab: hab[m.slug], por100: (m.places / hab[m.slug]) * 100 }))
+  .sort((a, b) => b.por100 - a.por100);
+const plazasHabProv = (p.places / poblacion.province) * 100;
+type ProvVac = { name: string; total: number; empty: number };
+const vacAnd = Object.values(vacias.andalucia as Record<string, ProvVac>);
+const plain = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+const andalucia = Object.entries(desahucios.andalucia as Record<string, { year: string; total: number; lau: number }>)
+  .map(([key, d]) => {
+    const prov = vacAnd.find((x) => plain(x.name) === key)!;
+    return { name: prov.name, total: d.total, lau: d.lau, viviendas: prov.total, tasa: (d.total / prov.total) * 10000 };
+  })
+  .sort((a, b) => b.tasa - a.tasa);
+const fotos = historico.snapshots as { date: string; total: number; places: number }[];
+const fotoMax = Math.max(1, ...fotos.map((f) => f.total));
 
 const indice = [
   ["#turisticas", "01", "Viviendas turísticas"],
@@ -132,6 +151,23 @@ const indice = [
         </ol>
       </div>
     </div>
+    <h3 class="display mt-10 text-2xl">Evolución mes a mes</h3>
+    {fotos.length >= 2 ? (
+      <>
+        <p class="mt-1 text-sm text-neutral-600">Alojamientos turísticos registrados en la provincia en cada descarga mensual. A diferencia de las altas por año, aquí sí se notan las bajas.</p>
+        <ul class="mt-3 max-w-2xl space-y-1.5 text-sm">
+          {fotos.map((f, i) => (
+            <li class="grid grid-cols-[5.5rem_1fr_7rem] items-center gap-2">
+              <span class="font-medium">{f.date.slice(0, 7)}</span>
+              <div class="h-4 rounded bg-neutral-200"><div class="h-4 rounded bg-brand" style={`width: ${Math.round((f.total / fotoMax) * 100)}%`}></div></div>
+              <span class="text-right text-neutral-600">{fmt(f.total)}{i > 0 && <span class="text-xs"> ({f.total - fotos[i - 1].total >= 0 ? "+" : ""}{fmt(f.total - fotos[i - 1].total)})</span>}</span>
+            </li>
+          ))}
+        </ul>
+      </>
+    ) : (
+      <p class="mt-1 text-sm text-neutral-600">Guardamos una foto del registro con cada descarga mensual desde {fotos[0]?.date.slice(0, 7)}. Cuando haya dos o más, aquí se verá cuánto crece o baja cada mes, incluidas las bajas que las altas por año no enseñan.</p>
+    )}
     <p class="mt-6 text-xs text-neutral-500">Fuente: <a href="https://www.juntadeandalucia.es/datosabiertos/portal/dataset/openrta" rel="noopener" class="underline">OpenRTA, Registro de Turismo de Andalucía</a> (CC BY 4.0). Generado el {stats.generated_at}; {p.skipped_without_valid_coordinates} registros descartados por coordenadas ausentes, fuera de la provincia o a más de 30 km de su municipio.</p>
   </section>
 
@@ -258,6 +294,40 @@ const indice = [
       </div>
     </div>
 
+    <div class="mt-10 grid gap-10 lg:grid-cols-2">
+      <div>
+        <h3 class="display text-2xl">Plazas turísticas por cada 100 habitantes</h3>
+        <p class="mt-1 text-sm text-neutral-600">Plazas del registro ({stats.source_updated_at}) sobre habitantes del padrón (INE, {poblacion.year}). Media provincial: {dec(plazasHabProv)}. En los municipios de arriba, en temporada hay más camas turísticas que vecinas.</p>
+        <ul class="mt-3 space-y-1.5 text-sm">
+          {plazasHab.slice(0, 15).map((m) => (
+            <li class="grid grid-cols-[9rem_1fr_3.5rem] items-center gap-2">
+              <a href={`/datos/${m.slug}/`} class="truncate font-medium hover:underline">{m.name}</a>
+              <div class="h-4 rounded bg-neutral-200"><div class="h-4 rounded bg-brand" style={`width: ${Math.round((m.por100 / plazasHab[0].por100) * 100)}%`}></div></div>
+              <span class="text-right text-neutral-600">{dec(m.por100)}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h3 class="display text-2xl">Desahucios en Andalucía</h3>
+        <p class="mt-1 text-sm text-neutral-600">Lanzamientos practicados en {desahucios.last_full_year} por cada 10.000 viviendas (INE, 2021), en las ocho provincias.</p>
+        <table class="mt-3 w-full text-sm">
+          <thead class="text-left text-xs uppercase text-neutral-500"><tr><th class="py-1">Provincia</th><th class="py-1">Desahucios</th><th class="py-1">De alquiler</th><th class="py-1">Por 10.000 viv.</th><th class="w-1/4 py-1"></th></tr></thead>
+          <tbody class="divide-y divide-neutral-100">
+            {andalucia.map((a) => (
+              <tr class:list={{ "font-semibold": a.name === "Cádiz" }}>
+                <td class="py-1.5">{a.name}</td>
+                <td class="py-1.5">{fmt(a.total)}</td>
+                <td class="py-1.5 text-neutral-700">{fmt(a.lau)}</td>
+                <td class="py-1.5">{dec(a.tasa)}</td>
+                <td class="py-1.5"><div class:list={["h-3 rounded", a.name === "Cádiz" ? "bg-brand" : "bg-neutral-400"]} style={`width: ${Math.round((a.tasa / andalucia[0].tasa) * 100)}%`}></div></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {[
         [`${dec(intensidadProv)} turísticas`, "por cada 100 viviendas de la provincia", "Registro de Turismo sobre viviendas del INE 2021"],
@@ -272,6 +342,6 @@ const indice = [
         </div>
       ))}
     </div>
-    <p class="mt-6 text-xs text-neutral-500">Las viviendas totales y las vacías son de 2021; las turísticas y la demanda, del mes indicado. El cruce compara fotos de fechas distintas.</p>
+    <p class="mt-6 text-xs text-neutral-500">Las viviendas totales y las vacías son de 2021; el padrón, de {poblacion.year}; las turísticas y la demanda, del mes indicado. El cruce compara fotos de fechas distintas. Padrón: <a href={poblacion.source_url} rel="noopener" class="underline">{poblacion.source}</a>.</p>
   </section>
 </Base>
