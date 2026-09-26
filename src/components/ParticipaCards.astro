@@ -1,0 +1,21 @@
+---
+import { AFILIATE } from "../data/social";
+
+const cards = [
+  { title: "Afíliate", text: "Únete y forma parte de la lucha. Cuota anual según tu capacidad, acompañamiento si tienes un conflicto y voz en las asambleas.", icon: "fa-solid fa-key", bg: "bg-white", href: AFILIATE },
+  { title: "Caja de resistencia", text: "Una aportación económica para apoyar a quienes se enfrentan a desahucios o represalias. Se paga desde la afiliación.", icon: "fa-solid fa-hand-holding-heart", bg: "bg-celeste", href: AFILIATE },
+  { title: "Súmate a las huelgas", text: "Si no puedes pagar, no estás sola. Infórmate sobre la huelga de alquileres y cómo organizarte con otras inquilinas.", icon: "fa-solid fa-fire", bg: "bg-rosa text-white", href: AFILIATE },
+];
+---
+
+<ul class="grid gap-8 md:grid-cols-3">
+  {cards.map((c, i) => (
+    <li class="reveal" style={`--i:${i}`}>
+      <a href={c.href} class:list={["brut brut-hover flex h-full flex-col p-7", c.bg]}>
+        <i class:list={[c.icon, "text-4xl"]} aria-hidden="true"></i>
+        <h3 class="display mt-5 text-3xl">{c.title}</h3>
+        <p class="mt-3 leading-relaxed">{c.text}</p>
+      </a>
+    </li>
+  ))}
+</ul>

@@ -1,0 +1,67 @@
+---
+import Base from "../layouts/Base.astro";
+import { EMAIL } from "../data/social";
+---
+
+<Base title="Aviso legal y privacidad" description="Condiciones de uso, cookies y protección de datos de la web del Sindicato de Inquilinas e Inquilinos de Cádiz.">
+  <article class="prose-sic max-w-3xl">
+    <h1 class="display text-5xl md:text-6xl">Aviso legal y privacidad</h1>
+    <p class="mt-4 font-mono text-xs uppercase tracking-widest text-neutral-600">Última revisión: septiembre de 2026</p>
+
+    <h2>1. Quién está detrás</h2>
+    <p>Esta web y las herramientas de <code>inquilinatocadiz.org</code> las publica el <strong>Sindicato de Inquilinas e Inquilinos de Cádiz</strong>, una organización de base formada por personas que viven de alquiler. Para cualquier cuestión sobre este aviso escríbenos a <a href={`mailto:${EMAIL}`}>{EMAIL}</a>.</p>
+
+    <h2>2. Uso del sitio</h2>
+    <p>Puedes usar libremente la web, el mapa, los datos y las utilidades. Te pedimos que no los emplees para fines ilícitos ni para acosar a nadie: el mapa muestra registros públicos de la Junta de Andalucía y anonimiza a las personas físicas. Podemos cambiar el contenido, el diseño o este aviso sin previo aviso.</p>
+
+    <h2>3. Enlaces</h2>
+    <p>Enlazamos a sitios de terceros, como otros sindicatos o fuentes oficiales, y no respondemos de su contenido. Puedes enlazar a cualquier página de esta web sin pedir permiso.</p>
+
+    <h2>4. Cookies y estadísticas</h2>
+    <p>Esta web <strong>no instala cookies</strong> a quien la visita ni carga recursos de terceros al abrirla: la tipografía, los iconos y los mapas base se sirven desde nuestros propios servidores o desde OpenStreetMap.</p>
+    <p>Para contar visitas usamos <strong>Umami</strong>, una herramienta de analítica alojada en nuestros servidores en la Unión Europea. No usa cookies, no guarda la dirección IP ni identifica a las personas, y no comparte datos con nadie. Por eso no necesita consentimiento.</p>
+    <p>Los vídeos de YouTube no se cargan hasta que pulsas «Ver vídeo». En ese momento se incrustan desde <code>youtube-nocookie.com</code> y se aplican las condiciones de Google.</p>
+
+    <h2>5. Protección de datos</h2>
+    <p>El responsable del tratamiento es el Sindicato de Inquilinas e Inquilinos de Cádiz. Tratamos tus datos conforme al Reglamento (UE) 2016/679 (RGPD) y la Ley Orgánica 3/2018.</p>
+    <p><strong>Esta web no recoge datos personales.</strong> Los formularios de afiliación, amigas y contacto están en <code>sindicadas.inquilinatocadiz.org</code>, donde se te informa de cada tratamiento antes de enviarlos. En resumen: usamos tus datos para gestionar tu relación con el sindicato e informarte de sus actividades, los conservamos mientras dure esa relación y no los cedemos a terceros salvo obligación legal. La afiliación sindical es un dato especialmente protegido y se guarda cifrado.</p>
+    <p>Puedes ejercer tus derechos de acceso, rectificación, supresión, limitación, oposición y portabilidad escribiendo a <a href={`mailto:${EMAIL}`}>{EMAIL}</a>. Si crees que no te hemos atendido bien, puedes reclamar ante la <a href="https://www.aepd.es/" rel="noopener">Agencia Española de Protección de Datos</a>.</p>
+
+    <h2>6. Contenidos y datos</h2>
+    <p>Los textos y materiales propios de esta web se pueden reproducir citando la fuente. Los datos del mapa proceden del Registro de Turismo de Andalucía (<a href="https://www.juntadeandalucia.es/datosabiertos/portal/dataset/openrta" rel="noopener">OpenRTA</a>, licencia CC BY 4.0) y del Catastro. El nombre y los logotipos del sindicato no se pueden usar sin permiso.</p>
+
+    <h2>7. Responsabilidad</h2>
+    <p>Las utilidades y guías son orientativas: resumen la ley pero no sustituyen el asesoramiento sobre tu caso. Trabajamos para que los datos estén al día, pero pueden contener errores de la fuente. No respondemos de daños derivados del uso del sitio ni de interrupciones ajenas a nuestro control.</p>
+
+    <h2>8. Legislación</h2>
+    <p>Este aviso se rige por la legislación española. Para cualquier controversia, las partes se someten a los juzgados del domicilio de la persona usuaria y, si reside fuera de España, a los de Cádiz.</p>
+  </article>
+</Base>
+
+<style>
+  .prose-sic h2 {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: 1.75rem;
+    line-height: 1;
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+    border-top: 3px solid var(--color-ink);
+  }
+  .prose-sic p {
+    margin-top: 1rem;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+  }
+  .prose-sic a {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+  .prose-sic a:hover {
+    color: var(--color-brand);
+  }
+  .prose-sic code {
+    font-size: 0.9em;
+  }
+</style>
