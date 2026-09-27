@@ -6,7 +6,7 @@ import { EMAIL } from "../data/social";
 <Base title="Aviso legal y privacidad" description="Condiciones de uso, cookies y protección de datos de la web del Sindicato de Inquilinas e Inquilinos de Cádiz.">
   <article class="prose-sic max-w-3xl">
     <h1 class="display text-5xl md:text-6xl">Aviso legal y privacidad</h1>
-    <p class="mt-4 font-mono text-xs uppercase tracking-widest text-neutral-600">Última revisión: septiembre de 2026</p>
+    <p class="mt-4 font-mono text-xs uppercase tracking-widest text-neutral-600">Última revisión: 27 de septiembre de 2026</p>
 
     <h2>1. Quién está detrás</h2>
     <p>Esta web y las herramientas de <code>inquilinatocadiz.org</code> las publica el <strong>Sindicato de Inquilinas e Inquilinos de Cádiz</strong>, una organización de base formada por personas que viven de alquiler. Para cualquier cuestión sobre este aviso escríbenos a <a href={`mailto:${EMAIL}`}>{EMAIL}</a>.</p>
@@ -20,6 +20,8 @@ import { EMAIL } from "../data/social";
     <h2>4. Cookies y estadísticas</h2>
     <p>Esta web <strong>no instala cookies</strong> a quien la visita ni carga recursos de terceros al abrirla: la tipografía, los iconos y los mapas base se sirven desde nuestros propios servidores o desde OpenStreetMap.</p>
     <p>Para contar visitas usamos <strong>Umami</strong>, una herramienta de analítica alojada en nuestros servidores en la Unión Europea. No usa cookies, no guarda la dirección IP ni identifica a las personas, y no comparte datos con nadie. Por eso no necesita consentimiento.</p>
+    <p>Además de las páginas vistas, Umami registra <strong>qué se usa</strong>: que alguien ha calculado una renta y con qué régimen, que ha filtrado el mapa por empresas o que ha pulsado «Afíliate» desde la portada. Nunca registra lo que escribes: ni calles, ni rentas, ni fechas, ni contratos. Sirve para saber qué herramientas ayudan y cuáles no.</p>
+    <p>La agenda de la portada y de <code>/agenda/</code> se carga desde <code>sindicadas.inquilinatocadiz.org</code>, nuestra propia aplicación: no interviene ningún tercero.</p>
     <p>Los vídeos de YouTube no se cargan hasta que pulsas «Ver vídeo». En ese momento se incrustan desde <code>youtube-nocookie.com</code> y se aplican las condiciones de Google.</p>
 
     <h2>5. Protección de datos</h2>
@@ -28,7 +30,19 @@ import { EMAIL } from "../data/social";
     <p>Puedes ejercer tus derechos de acceso, rectificación, supresión, limitación, oposición y portabilidad escribiendo a <a href={`mailto:${EMAIL}`}>{EMAIL}</a>. Si crees que no te hemos atendido bien, puedes reclamar ante la <a href="https://www.aepd.es/" rel="noopener">Agencia Española de Protección de Datos</a>.</p>
 
     <h2>6. Contenidos y datos</h2>
-    <p>Los textos y materiales propios de esta web se pueden reproducir citando la fuente. Los datos del mapa proceden del Registro de Turismo de Andalucía (<a href="https://www.juntadeandalucia.es/datosabiertos/portal/dataset/openrta" rel="noopener">OpenRTA</a>, licencia CC BY 4.0) y del Catastro. El nombre y los logotipos del sindicato no se pueden usar sin permiso.</p>
+    <p>Los textos, gráficos y cruces propios de esta web se pueden reproducir citando la fuente («Sindicato de Inquilinas e Inquilinos de Cádiz, inquilinatocadiz.org»). El nombre y los logotipos del sindicato no se pueden usar sin permiso.</p>
+    <p>Los datos que enseñamos son públicos y de fuentes oficiales. Los descargamos tal cual y los presentamos sin añadir información de nadie:</p>
+    <ul>
+      <li><strong>Viviendas turísticas</strong>: Registro de Turismo de Andalucía, en datos abiertos de la Junta (<a href="https://www.juntadeandalucia.es/datosabiertos/portal/dataset/openrta" rel="noopener">OpenRTA</a>, licencia CC BY 4.0), regenerado cada mes. El registro publica el nombre del titular sólo cuando es una empresa; las personas físicas llegan anonimizadas y así las dejamos, y eliminamos los teléfonos y correos que incluye.</li>
+      <li><strong>Fincas de un único propietario</strong>: Dirección General del Catastro, sede electrónica. El Catastro no dice quién es el propietario y nosotras tampoco.</li>
+      <li><strong>Viviendas vacías y viviendas totales</strong>: INE, Censo de Población y Viviendas 2021, viviendas según su intensidad de uso (consumo eléctrico).</li>
+      <li><strong>Habitantes</strong>: INE, cifras oficiales de población de los municipios (revisión del padrón).</li>
+      <li><strong>Demanda de vivienda protegida</strong>: Junta de Andalucía, estadística mensual de los Registros Municipales de Demandantes de Vivienda Protegida. Son totales por municipio, sin ningún dato de las personas inscritas.</li>
+      <li><strong>Desahucios</strong>: Consejo General del Poder Judicial, estadística judicial, lanzamientos practicados por provincia.</li>
+      <li><strong>Índices IPC e IRAV</strong> de la calculadora de renta: INE.</li>
+      <li><strong>Mapa base</strong>: OpenStreetMap y sus colaboradores (ODbL).</li>
+    </ul>
+    <p>Cada bloque de la página de datos indica su fuente, su fecha y sus límites. Los cruces entre fuentes de fechas distintas son órdenes de magnitud, no contabilidad exacta.</p>
 
     <h2>7. Responsabilidad</h2>
     <p>Las utilidades y guías son orientativas: resumen la ley pero no sustituyen el asesoramiento sobre tu caso. Trabajamos para que los datos estén al día, pero pueden contener errores de la fuente. No respondemos de daños derivados del uso del sitio ni de interrupciones ajenas a nuestro control.</p>
@@ -60,6 +74,15 @@ import { EMAIL } from "../data/social";
   }
   .prose-sic a:hover {
     color: var(--color-brand);
+  }
+  .prose-sic ul {
+    margin-top: 0.75rem;
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+  .prose-sic li {
+    margin-top: 0.5rem;
+    line-height: 1.55;
   }
   .prose-sic code {
     font-size: 0.9em;
