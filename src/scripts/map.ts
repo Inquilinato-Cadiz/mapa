@@ -95,7 +95,7 @@ const render = () => {
 
   if (term && visible.length > 0 && visible.length <= 40) {
     results.innerHTML = visible
-      .map((f) => `<li><button type="button" class="block w-full px-3 py-2 text-left hover:bg-neutral-50" data-id="${esc(f.properties.id)}">${esc(f.properties.address)} <span class="text-xs text-neutral-500">${f.properties.holder ? esc(f.properties.holder) : "particular"}</span></button></li>`)
+      .map((f) => `<li><button type="button" class="block w-full px-3 py-2 text-left hover:bg-paper" data-id="${esc(f.properties.id)}">${esc(f.properties.address)} <span class="text-xs text-neutral-500">${f.properties.holder ? esc(f.properties.holder) : "particular"}</span></button></li>`)
       .join("");
     results.classList.remove("hidden");
     if (visible.length <= 12) map.fitBounds(L.featureGroup(visible.map((f) => markers.get(f)!)).getBounds(), { padding: [40, 40], maxZoom: 18 });

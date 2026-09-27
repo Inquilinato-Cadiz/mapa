@@ -50,14 +50,14 @@ const render = () => {
 
   result.innerHTML = `<h2 class="display text-2xl">Tus fechas</h2>${status}
     <dl class="mt-4 grid gap-x-4 gap-y-2 text-sm sm:grid-cols-[auto_1fr]">
-      <dt class="text-neutral-500">Régimen aplicable</dt><dd>${r.name}. Prórroga obligatoria de ${r.mandatoryYears} años${legal ? " (arrendador persona jurídica)" : ""} y tácita de ${r.tacitYears}.</dd>
-      <dt class="text-neutral-500">Fin del plazo del contrato</dt><dd>${fmt(agreedEnd)}${inMandatory ? " — se prorroga solo si no avisas tú" : ""}</dd>
-      ${renewals.length > 1 ? `<dt class="text-neutral-500">Renovaciones anuales</dt><dd>${renewals.map(fmt).join(" · ")}</dd>` : ""}
-      <dt class="text-neutral-500">Fin de la prórroga obligatoria</dt><dd><strong>${fmt(mandatoryEnd)}</strong></dd>
-      <dt class="text-neutral-500">El arrendador debe avisarte antes del</dt><dd>${fmt(landlordNoticeBy)} (${r.landlordNotice} antes) si no quiere prorrogar. Si no avisa, sigues.</dd>
-      <dt class="text-neutral-500">Tú debes avisar antes del</dt><dd>${fmt(tenantNoticeBy)} (${r.tenantNotice} antes) si quieres irte al acabar la prórroga obligatoria.</dd>
-      <dt class="text-neutral-500">Fin de la prórroga tácita</dt><dd>${fmt(tacitEnd)}</dd>
-      <dt class="text-neutral-500">Puedes irte cuando quieras desde</dt><dd>${fmt(withdrawalFrom)}, avisando con 30 días.</dd>
+      <dt class="text-neutral-700">Régimen aplicable</dt><dd>${r.name}. Prórroga obligatoria de ${r.mandatoryYears} años${legal ? " (arrendador persona jurídica)" : ""} y tácita de ${r.tacitYears}.</dd>
+      <dt class="text-neutral-700">Fin del plazo del contrato</dt><dd>${fmt(agreedEnd)}${inMandatory ? " — se prorroga solo si no avisas tú" : ""}</dd>
+      ${renewals.length > 1 ? `<dt class="text-neutral-700">Renovaciones anuales</dt><dd>${renewals.map(fmt).join(" · ")}</dd>` : ""}
+      <dt class="text-neutral-700">Fin de la prórroga obligatoria</dt><dd><strong>${fmt(mandatoryEnd)}</strong></dd>
+      <dt class="text-neutral-700">El arrendador debe avisarte antes del</dt><dd>${fmt(landlordNoticeBy)} (${r.landlordNotice} antes) si no quiere prorrogar. Si no avisa, sigues.</dd>
+      <dt class="text-neutral-700">Tú debes avisar antes del</dt><dd>${fmt(tenantNoticeBy)} (${r.tenantNotice} antes) si quieres irte al acabar la prórroga obligatoria.</dd>
+      <dt class="text-neutral-700">Fin de la prórroga tácita</dt><dd>${fmt(tacitEnd)}</dd>
+      <dt class="text-neutral-700">Puedes irte cuando quieras desde</dt><dd>${fmt(withdrawalFrom)}, avisando con 30 días.</dd>
     </dl>
     <p class="mt-4 text-sm text-neutral-700">Durante la prórroga obligatoria sólo pueden recuperar el piso por necesidad propia o de familiares de primer grado, avisando con 2 meses y si el contrato lo recogía al firmarlo (art. 9.3). Y sólo a partir del primer año.</p>`;
   result.classList.remove("hidden");

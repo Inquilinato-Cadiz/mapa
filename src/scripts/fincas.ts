@@ -42,7 +42,7 @@ const popup = (p: Props) => {
   return `<p class="font-semibold">${esc(p.address)}${p.postal_code ? ` <span class="font-normal text-neutral-500">${esc(p.postal_code)}</span>` : ""}</p>
     <p class="mt-1 text-xs text-neutral-600">Finca entera de un único propietario.</p>
     <dl class="mt-2 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">${rows.map(([k, v]) => `<dt class="text-neutral-500">${k}</dt><dd>${v}</dd>`).join("")}</dl>
-    <p class="mt-3"><a class="inline-block rounded-md bg-brand px-3 py-1.5 text-xs font-semibold text-white hover:bg-brand-dark" href="https://sindicadas.inquilinatocadiz.org/contacto?motivo=building" data-umami-event="fincas-organizate">¿Vives aquí? Organízate con el sindicato</a></p>`;
+    <p class="mt-3"><a class="display inline-block border-2 border-ink bg-brand px-3 py-1.5 text-sm !text-white hover:bg-brand-dark" href="https://sindicadas.inquilinatocadiz.org/contacto?motivo=building" data-umami-event="fincas-organizate">¿Vives aquí? Organízate con el sindicato</a></p>`;
 };
 
 // El tamaño del círculo crece con la raíz del número de viviendas: 5 → 6 px, 50 → 12 px, 380 → 25 px.
@@ -71,7 +71,7 @@ const render = () => {
 
   if (term && visible.length > 0 && visible.length <= 40) {
     results.innerHTML = visible
-      .map((f) => `<li><button type="button" class="flex w-full items-baseline justify-between gap-3 px-3 py-2 text-left hover:bg-neutral-50" data-ref="${esc(f.properties.ref)}"><span>${esc(f.properties.address)}</span> <span class="shrink-0 text-xs text-neutral-500">${fmt(f.properties.homes)} viv.</span></button></li>`)
+      .map((f) => `<li><button type="button" class="flex w-full items-baseline justify-between gap-3 px-3 py-2 text-left hover:bg-paper" data-ref="${esc(f.properties.ref)}"><span>${esc(f.properties.address)}</span> <span class="shrink-0 text-xs text-neutral-500">${fmt(f.properties.homes)} viv.</span></button></li>`)
       .join("");
     results.classList.remove("hidden");
     if (visible.length <= 12) map.fitBounds(L.featureGroup(visible.map((f) => markers.get(f)!)).getBounds(), { padding: [40, 40], maxZoom: 18 });
