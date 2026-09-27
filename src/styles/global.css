@@ -75,14 +75,14 @@ html {
   }
 }
 
-/* Aparición al hacer scroll: el script añade .is-in. */
-.reveal {
+/* Aparición al hacer scroll: el script añade .is-in. Sin JS (html sin .js) el contenido se ve siempre. */
+.js .reveal {
   opacity: 0;
   transform: translateY(12px);
   transition: opacity 0.5s ease-out, transform 0.5s ease-out;
   transition-delay: calc(var(--i, 0) * 80ms);
 }
-.reveal.is-in {
+.js .reveal.is-in {
   opacity: 1;
   transform: none;
 }
@@ -94,13 +94,20 @@ html {
   .rise {
     animation: none;
   }
-  .reveal {
+  .js .reveal {
     opacity: 1;
     transform: none;
     transition: none;
   }
   .brut-hover {
     transition: none;
+  }
+}
+
+/* Menú móvil: con JS se pliega tras el botón; sin JS queda siempre abierto. */
+@media (width < 48rem) {
+  .js #site-nav:not(.is-open) {
+    display: none;
   }
 }
 

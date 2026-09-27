@@ -11,15 +11,16 @@ const tools = [
 ---
 
 <Base title="Utilidades para inquilinas">
-  <h1 class="display text-4xl">Utilidades</h1>
-  <p class="mt-2 max-w-2xl text-neutral-600">Cinco preguntas que nos hacen cada semana en la asamblea, con respuesta rápida. Gratis, sin registro y sin guardar nada de lo que escribes: todo se calcula en tu navegador.</p>
+  <h1 class="display text-6xl md:text-7xl">Utilidades</h1>
+  <p class="mt-6 max-w-2xl text-lg leading-relaxed md:text-xl">Cinco preguntas que nos hacen cada semana en la asamblea, con respuesta rápida. Gratis, sin registro y sin guardar nada de lo que escribes: todo se calcula en tu navegador.</p>
 
-  <ul class="mt-8 grid gap-4 sm:grid-cols-2">
+  <ul class="mt-12 grid gap-8 sm:grid-cols-2">
     {tools.map((t) => (
       <li>
-        <a href={t.href} class="block h-full rounded-lg border border-neutral-200 bg-white p-5 hover:border-brand">
-          <h2 class="display text-2xl text-brand">{t.title}</h2>
-          <p class="mt-2 text-sm text-neutral-700">{t.text}</p>
+        <a href={t.href} class="brut brut-hover group flex h-full flex-col bg-white p-7">
+          <h2 class="display text-3xl group-hover:text-brand">{t.title}</h2>
+          <p class="mt-3 leading-relaxed">{t.text}</p>
+          <span class="display mt-auto pt-5 text-lg text-brand">Abrir →</span>
         </a>
       </li>
     ))}
